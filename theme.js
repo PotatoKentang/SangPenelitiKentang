@@ -1,13 +1,5 @@
 export const colors = {
   black: '#1E1E1E',
-  // primary: '#E45858',
-  // primaryHSL: '0, 72%, 62%',
-  // primaryDark: '#8E3636',
-  // secondary: '#6246EA',
-  // success: '#006618',
-  // success2: '#C1FFCF',
-  // danger: '#CD1A1A',
-  // danger2: '#F8D3D3',
   white: '#F1F1F1',
   grey1: '#E0E0E0',
   grey2: '#797979',
@@ -60,40 +52,13 @@ export const typography = {
     sz: '10px',
     sz_i: 10,
   },
-  // venti: {
-  //   sm: '28px',
-  //   md: '30px',
-  //   lg: '32px',
-  //   xl: '34px',
-  //   sm_i: 28,
-  //   md_i: 30,
-  //   lg_i: 32,
-  //   xl_i: 34,
-  // },
-  // grande: {
-  // xs: '18px',
-  // sm: '20px',
-  // md: '22px',
-  // lg: '24px',
-  // xl: '26px',
-  // xs_i: 18,
-  // sm_i: 20,
-  // md_i: 22,
-  // lg_i: 24,
-  // xl_i: 26,
-  // },
-  // tall: {
-  //   xs: '8px',
-  //   sm: '10px',
-  //   md: '12px',
-  //   lg: '14px',
-  //   xl: '16px',
-  //   xs_i: 8,
-  //   sm_i: 10,
-  //   md_i: 12,
-  //   lg_i: 14,
-  //   xl_i: 16,
-  // },
 }
-
-export default { colors, typography }
+const styles={
+  container:{
+    flex:1,
+    backgroundColor:colors.white,
+    alignItems:'center',
+    justifyContent:'center',
+  },
+}
+export default { colors, typography,styles }

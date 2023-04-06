@@ -5,19 +5,24 @@ import * as SplashScreen from 'expo-splash-screen'
 import React, { useCallback } from 'react'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { ThemeProvider } from 'styled-components/native'
-import Access from './pages/accessability'
-import Home from './pages/home'
-import Result from './pages/result'
+import HomeScreen from './pages/home'
+import CalculatorScreen from './pages/calculator'
+import BlogScreen from './pages/blog'
 import theme from './theme'
-
-import { LogBox } from 'react-native'
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { routesName } from './routes'
+import { LogBox, Text } from 'react-native'
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
 ])
 
-export default function App() {
-  const Stack = createNativeStackNavigator()
+// const Tab = createMaterialTopTabNavigator()
+const Tab = createMaterialBottomTabNavigator()
+
+export default function App({ navigation, route }) {
   const [fontsLoaded] = useFonts({
     'Jakarta-m': require('./assets/fonts/PlusJakartaSans-Medium.ttf'),
     'Jakarta-sb': require('./assets/fonts/PlusJakartaSans-SemiBold.ttf'),
@@ -39,7 +44,7 @@ export default function App() {
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
       setTimeout(async () => {
-      await SplashScreen.hideAsync()
+        await SplashScreen.hideAsync()
       }, 100000)
     }
   }, [fontsLoaded])
@@ -47,30 +52,55 @@ export default function App() {
   if (!fontsLoaded) {
     return null
   }
-
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <NavigationContainer onLayout={onLayoutRootView}>
         <ThemeProvider theme={theme}>
-          <Stack.Navigator initialRouteName="Home">
-            <Stack.Screen
-              name="Home"
-              component={Home}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Result"
-              component={Result}
+          <Tab.Navigator
+            initialRouteName={routesName.home}
+            backBehavior="order"
+            tabBarPosition="bottom"
+            screenOptions={() => ({
+              tabBarActiveTintColor: 'tomato',
+              tabBarInactiveTintColor: 'gray',
+              tabBarShowIcon: true,
+              tabBarAllowFontScaling: true,
+            })}
+          >
+            <Tab.Screen
+              name={routesName.home}
+              component={HomeScreen}
               options={{
                 headerShown: false,
+                tabBarLabel: routesName.home,
+                tabBarIcon: ({ color }) => (
+                  <MaterialCommunityIcons name="home" color={color} size={26} />
+                ),
               }}
             />
-            <Stack.Screen
-              name="Access"
-              component={Access}
-              options={{ headerShown: false }}
+            <Tab.Screen
+              name={routesName.calculator}
+              component={CalculatorScreen}
+              options={{
+                headerShown: false,
+                tabBarLabel: routesName.calculator,
+                tabBarIcon: ({ color }) => (
+                  <MaterialCommunityIcons name="calculator" color={color} size={26} />
+                ),
+              }}
             />
-          </Stack.Navigator>
+            <Tab.Screen
+              name={routesName.blog}
+              component={BlogScreen}
+              options={{
+                headerShown: false,
+                tabBarLabel: routesName.blog,
+                tabBarIcon: ({ color }) => (
+                  <MaterialCommunityIcons name="post-outline" color={color} size={26} />
+                ),
+              }}
+            />
+          </Tab.Navigator>
         </ThemeProvider>
       </NavigationContainer>
     </GestureHandlerRootView>

@@ -36,7 +36,7 @@ function LoadingView() {
   )
 }
 
-export default function Homepage({ route, navigation }) {
+export default function HomePage({ route, navigation }) {
   //expo camera
   const [image, setImage] = useState(null)
   const [type, setType] = useState(null)
