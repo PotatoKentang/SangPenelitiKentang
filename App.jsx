@@ -5,21 +5,27 @@ import * as SplashScreen from 'expo-splash-screen'
 import React, { useCallback } from 'react'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { ThemeProvider } from 'styled-components/native'
+
+// pages
 import HomeScreen from './pages/home'
 import CalculatorScreen from './pages/calculator'
 import BlogScreen from './pages/blog'
-import theme from './theme'
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
+
+//navigators
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
+
+//icons
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+//utilities
+import theme from './theme'
 import { routesName } from './routes'
-import { LogBox, Text } from 'react-native'
+import { LogBox} from 'react-native'
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
 ])
 
-// const Tab = createMaterialTopTabNavigator()
 const Tab = createMaterialBottomTabNavigator()
 
 export default function App({ navigation, route }) {
@@ -92,6 +98,7 @@ export default function App({ navigation, route }) {
             <Tab.Screen
               name={routesName.blog}
               component={BlogScreen}
+              style={{ display:'none' }}
               options={{
                 headerShown: false,
                 tabBarLabel: routesName.blog,

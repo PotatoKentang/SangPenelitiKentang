@@ -1,6 +1,5 @@
 export const getOptimalRatio = (ratios) => {
-  const ratio =
-    ratios.find((ratio) => ratio === '20:9') || ratios[ratios.length - 1]
+  const ratio = ratios[ratios.length - 1]
   return ratio
 }
 

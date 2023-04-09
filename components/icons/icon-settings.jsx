@@ -1,6 +1,6 @@
 import { Text, TouchableOpacity } from "react-native";
 import Settings from "../../assets/global/settings.svg";
-import { toggleSettings } from '../../store/toggle-settings-store'
+import { toggleSettings } from '../../store/toggle-store'
 export default function Icon_Settings(props) {
   const { text,ml} = props;
   const setToggle = toggleSettings(state=>state.setToggle)

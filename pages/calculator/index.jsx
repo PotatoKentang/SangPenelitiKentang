@@ -1,15 +1,15 @@
-import
-{
-  View,Text
-} from 'react-native'
-import styled, { useTheme } from 'styled-components/native'
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
+import TextBasedCalculatorPage from './text-based-calculator'
+import UIBasedCalculator from './ui-based-calculator'
 
-export default function CalculatorPage({ route, navigation })
-{
+export default function CalculatorPage() {
   const theme = useTheme()
+  const Tab = createMaterialTopTabNavigator()
   return (
-    <View style={theme.styles.container}>
-      <Text>CalculatorPage</Text>
-    </View>
+    <Tab.Navigator
+      initialRouteName={UIBasedCalculator}>
+      <Tab.Screen name="UI based" component={UIBasedCalculator} />
+      <Tab.Screen name="Text based" component={TextBasedCalculatorPage} />
+    </Tab.Navigator>
   )
 }

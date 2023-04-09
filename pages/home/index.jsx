@@ -22,11 +22,12 @@ import Icon_Snapshot from '../../components/icons/icon-snap'
 import { ImagePickerOption, snapshotOption } from './constants'
 import { getOptimalRatio } from './methods'
 
-import { useTextContentStore } from '../../store/text-content-store'
+import { toggleNutrientsPopUpModal } from '../../store/toggle-store'
 import { createFormData } from './methods'
 
-import * as MediaLibrary from 'expo-media-library'
 import Api from '../../api'
+import NutrientsPopUp from './nutrients-pop-up'
+
 
 function LoadingView() {
   return (
@@ -45,13 +46,11 @@ export default function HomePage({ route, navigation }) {
   const [ratio, setRatio] = useState(null)
   const [flashMode, setFlashMode] = useState(null)
   const cameraRef = useRef(null)
-  const [editorVisible, setEditorVisible] = useState(false)
   const [loading, setLoading] = useState(false)
-  const { height: screenHeight, width: screenWidth } = useWindowDimensions()
+  const {height: screenHeight, width: screenWidth } = useWindowDimensions()
   const isFocused = useIsFocused()
 
-  const markdown = useTextContentStore((state) => state.markdown)
-  const setContent = useTextContentStore((state) => state.setContent)
+  const togglePopUpModal = toggleNutrientsPopUpModal((state) => state.toggleNutrientsPopUpModal)
 
   //navigation
   const toggleFlash = () =>
@@ -83,27 +82,22 @@ export default function HomePage({ route, navigation }) {
     cameraRatio()
   }
 
-  const onNavigatePress = async () => {
-    setLoading(false)
-    await navigation.navigate('Result', {
-      previousScreen: route.name,
-    })
-  }
 
   //take image from screenshoot
   const takePicture = async () => {
     try {
       const result = await captureRef(cameraRef.current, snapshotOption)
-      // const asset = await MediaLibrary.createAssetAsync(result)
-      // await MediaLibrary.createAlbumAsync('Expo', asset, false).catch(
-      //   (error) => {
-      //     console.log('err', error)
-      //   }
-      // )
-
-      await MediaLibrary.saveToLibraryAsync(result)
-
-      openMedia()
+      // Api.post("/food", { image: result })
+      //   .then((response) => {
+      //     console.log(response.data)
+      //     setContent(response.data)
+      //   })
+      //1. fetch data with result as params
+      //2. set loading
+      //3. set store content with response data if success
+      //4. set loading false
+      //5. navigate to result page
+      togglePopUpModal(true)
     } catch (e) {
       console.log(e)
     }
@@ -130,7 +124,7 @@ export default function HomePage({ route, navigation }) {
       //dummy content
       // setContent('**this** is **da**ta **from** the *server*')
       // onNavigatePress()
-
+      setLoading(true)
       await Api.post('bionic', data, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -143,7 +137,6 @@ export default function HomePage({ route, navigation }) {
           }
           if (result !== undefined) {
             setContent(result)
-            onNavigatePress()
           }
           setLoading(false)
         })
@@ -155,14 +148,14 @@ export default function HomePage({ route, navigation }) {
   )
 
   useEffect(() => {
-    ;(async function () {
+    (async function () {
       //3x initial render karena ada 3 setup
       setImage(null)
       checkCameraPermission()
       checkMediaPermission()
       initialCameraSetup()
     })()
-  }, [])
+  }, [cameraPermission,checkMediaPermission])
 
   if (cameraPermission === false) {
     return <LoadingView />
@@ -180,6 +173,7 @@ export default function HomePage({ route, navigation }) {
     <SafeAreaView style={{ flex: 1 }} collapsable={false}>
       {isFocused && (
         <ViewFullScreen>
+          <NutrientsPopUp style={{position:'absolute'}}/>
           <Camera
             style={{ flex: 1, width: screenWidth, height: screenHeight }}
             type={type}
