@@ -1,11 +1,11 @@
 import { create } from 'zustand'
 
 export const toggleSettings = create((set) => ({
-  toggleOn:false,
-  setToggle: () => set((state) => ({ toggleOn: !state.toggleOn })),
+  isActive:false,
+  setActive: () => set((state) => ({ isActive: !state.isActive })),
 }))
 
 export const toggleNutrientsPopUpModal = create((set) => ({
-  toggleOn:false,
-  setToggle: () => set((state) => ({ toggleOn: !state.toggleOn })),
+  isActive:true,
+  setActive: () => set((state) => ({ isActive: !state.isActive })),
 }))

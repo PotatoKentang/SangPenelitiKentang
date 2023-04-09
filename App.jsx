@@ -8,6 +8,7 @@ import { ThemeProvider } from 'styled-components/native'
 
 // pages
 import HomeScreen from './pages/home'
+import CameraScreen from './pages/camera'
 import CalculatorScreen from './pages/calculator'
 import BlogScreen from './pages/blog'
 
@@ -15,13 +16,15 @@ import BlogScreen from './pages/blog'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
 
 //icons
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 //utilities
 import theme from './theme'
 import { routesName } from './routes'
-import { LogBox} from 'react-native'
+import { LogBox } from 'react-native'
 
+//react native paper
+import { Modal, Portal, Button, Provider } from 'react-native-paper'
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
 ])
@@ -59,56 +62,88 @@ export default function App({ navigation, route }) {
     return null
   }
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={{ flex: 1}}>
       <NavigationContainer onLayout={onLayoutRootView}>
-        <ThemeProvider theme={theme}>
-          <Tab.Navigator
-            initialRouteName={routesName.home}
-            backBehavior="order"
-            tabBarPosition="bottom"
-            screenOptions={() => ({
-              tabBarActiveTintColor: 'tomato',
-              tabBarInactiveTintColor: 'gray',
-              tabBarShowIcon: true,
-              tabBarAllowFontScaling: true,
-            })}
-          >
-            <Tab.Screen
-              name={routesName.home}
-              component={HomeScreen}
-              options={{
-                headerShown: false,
-                tabBarLabel: routesName.home,
-                tabBarIcon: ({ color }) => (
-                  <MaterialCommunityIcons name="home" color={color} size={26} />
-                ),
-              }}
-            />
-            <Tab.Screen
-              name={routesName.calculator}
-              component={CalculatorScreen}
-              options={{
-                headerShown: false,
-                tabBarLabel: routesName.calculator,
-                tabBarIcon: ({ color }) => (
-                  <MaterialCommunityIcons name="calculator" color={color} size={26} />
-                ),
-              }}
-            />
-            <Tab.Screen
-              name={routesName.blog}
-              component={BlogScreen}
-              style={{ display:'none' }}
-              options={{
-                headerShown: false,
-                tabBarLabel: routesName.blog,
-                tabBarIcon: ({ color }) => (
-                  <MaterialCommunityIcons name="post-outline" color={color} size={26} />
-                ),
-              }}
-            />
-          </Tab.Navigator>
-        </ThemeProvider>
+        <Provider>
+          <ThemeProvider theme={theme}>
+            <Tab.Navigator
+              initialRouteName={routesName.home}
+              backBehavior="order"
+              tabBarPosition="bottom"
+              screenOptions={() => ({
+                tabBarActiveTintColor: 'tomato',
+                tabBarInactiveTintColor: 'gray',
+                tabBarShowIcon: true,
+                tabBarAllowFontScaling: true,
+              })}
+            >
+              <Tab.Screen
+                name={routesName.home}
+                component={HomeScreen}
+                options={{
+                  headerShown: false,
+                  tabBarLabel: routesName.home,
+                  tabBarIcon: ({ color }) => (
+                    <MaterialCommunityIcons
+                      name="home"
+                      color={color}
+                      size={26}
+                    />
+                  ),
+                }}
+              />
+              <Tab.Screen
+                name="Camera"
+                component={CameraScreen}
+                options={{
+                  headerShown: false,
+                  // tabBarLabel: routesName.about,
+                  style: {
+                    display: 'none',
+                  },
+                  tabBarIcon: ({ color }) => (
+                    <MaterialCommunityIcons
+                      name="camera-outline"
+                      color={color}
+                      size={26}
+                    />
+                  ),
+                }}
+              />
+              <Tab.Screen
+                name={routesName.calculator}
+                component={CalculatorScreen}
+                options={{
+                  headerShown: false,
+                  tabBarLabel: routesName.calculator,
+                  tabBarIcon: ({ color }) => (
+                    <MaterialCommunityIcons
+                      name="calculator"
+                      color={color}
+                      size={26}
+                    />
+                  ),
+                }}
+              />
+              <Tab.Screen
+                name={routesName.blog}
+                component={BlogScreen}
+                style={{ display: 'none' }}
+                options={{
+                  headerShown: false,
+                  tabBarLabel: routesName.blog,
+                  tabBarIcon: ({ color }) => (
+                    <MaterialCommunityIcons
+                      name="post-outline"
+                      color={color}
+                      size={26}
+                    />
+                  ),
+                }}
+              />
+            </Tab.Navigator>
+          </ThemeProvider>
+        </Provider>
       </NavigationContainer>
     </GestureHandlerRootView>
   )

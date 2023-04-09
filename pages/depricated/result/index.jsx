@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { useReadingThemeStore } from '../../store/reading-theme-store'
 import { toggleSettings } from '../../store/toggle-settings-store'
 import Access from '../accessability/index'
-import Header from './header'
+import Header from '../../calculator/header'
 import Main from './main'
 
 export default function ResultPage({ route, navigation }) {

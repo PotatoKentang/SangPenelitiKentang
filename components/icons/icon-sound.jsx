@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Text, TouchableOpacity } from 'react-native'
 import Speaker from '../../assets/global/speaker.svg'
 import Stop from '../../assets/global/stop.svg'
-import { useTextContentStore } from '../../store/text-content-store'
+import { useTextContentStore } from '../../store/content-store'
 export default function Icon_Retake(props) {
   const { text, ml } = props
   const [isSpeaking, setIsSpeaking] = useState(false)
