@@ -5,9 +5,9 @@ export default function BlogItem(props) {
   const { title, date, author, content, image, tags } = props.blog
   const navigation = useNavigation()
   return (
-    <Card style={{ marginVertical:3,width:'47%' }}>
+    <Card style={{ marginVertical:3}}>
       <Card.Title title={title}/>
-      <Card.Cover source={{ uri: 'https://picsum.photos/700' }} style={{height:100}}/>
+      <Card.Cover source={{ uri: 'https://picsum.photos/700' }} style={{height:200}}/>
       <Card.Content>
         {/* <Text variant="titleLarge">Card title</Text> */}
         <Text variant="bodyMedium">{content}</Text>
