@@ -67,7 +67,7 @@ export default function App({ navigation, route }) {
         <Provider>
           <ThemeProvider theme={theme}>
             <Tab.Navigator
-              initialRouteName={routesName.home}
+              initialRouteName={routesName.camera}
               backBehavior="order"
               tabBarPosition="bottom"
               screenOptions={() => ({
@@ -93,7 +93,7 @@ export default function App({ navigation, route }) {
                 }}
               />
               <Tab.Screen
-                name="Camera"
+                name={routesName.camera}
                 component={CameraScreen}
                 options={{
                   headerShown: false,

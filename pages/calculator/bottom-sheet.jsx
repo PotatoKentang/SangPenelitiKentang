@@ -1,16 +1,14 @@
 import BottomSheet from '@gorhom/bottom-sheet'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-
-export default function BottomSheet() {
+import { BottomSheetStore } from '../../store/toggle-and-content-store'
+export default function BottomSheetSection() {
   const [index, setIndex] = useState(0)
   const [open, setOpen] = useState(false)
   const snapPoints = useMemo(() => ['30%', '50%', '100%'], [])
   const sheetRef = useRef(null)
-
-  const handleSheetChange = useCallback((index) => {
-    console.log('handleSheetChange', index)
-  }, [])
+  const bottomSheetisActive = BottomSheetStore((state) => state.isActive)
+  const handleSheetChange = useCallback((index) => {}, [])
 
   const handleSnapPress = useCallback((index) => {
     sheetRef.current?.snapToIndex(index)
@@ -20,7 +18,9 @@ export default function BottomSheet() {
     sheetRef.current?.close()
   }, [])
 
-
+  if (!bottomSheetisActive) {
+    return null
+  }
   return (
     <View style={{ flex: 1 }}>
       <BottomSheet
@@ -29,6 +29,7 @@ export default function BottomSheet() {
         initialSnapIndex={0}
         onChange={handleSheetChange}
       >
+        <Text>hi</Text>
       </BottomSheet>
     </View>
   )

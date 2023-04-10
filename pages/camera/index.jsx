@@ -22,13 +22,13 @@ import Icon_Snapshot from '../../components/icons/icon-snap'
 import { ImagePickerOption, snapshotOption } from './constants'
 import { getOptimalRatio } from './methods'
 
-import { toggleNutrientsPopUpModal } from '../../store/toggle-store'
-import { nutritionContentStore } from '../../store/content-store'
-import { createFormData } from './methods'
-
+import {
+  NutrientsPopUpModalStore,
+  toggleLoadingScreen,
+} from '../../store/toggle-and-content-store'
+import { createFormDataWithImages } from '../../utility/createForm'
 import Api from '../../api'
 import NutrientsPopUp from './nutrients-pop-up'
-
 
 function LoadingView() {
   return (
@@ -38,7 +38,7 @@ function LoadingView() {
   )
 }
 
-export default function CameraPage({ route, navigation }) {
+export default function CameraPage() {
   //expo camera
   const [image, setImage] = useState(null)
   const [type, setType] = useState(null)
@@ -47,12 +47,19 @@ export default function CameraPage({ route, navigation }) {
   const [ratio, setRatio] = useState(null)
   const [flashMode, setFlashMode] = useState(null)
   const cameraRef = useRef(null)
+  const [editorVisible, setEditorVisible] = useState(false)
   const [loading, setLoading] = useState(false)
-  const {height: screenHeight, width: screenWidth } = useWindowDimensions()
+  const { height: screenHeight, width: screenWidth } = useWindowDimensions()
   const isFocused = useIsFocused()
 
-  const setModalVisible = toggleNutrientsPopUpModal((state) => state.setActive)
-  const setNutritionContent = nutritionContentStore((state) => state.setNutritionContent)
+  //store
+  const setModalVisible = NutrientsPopUpModalStore((state) => state.setActive)
+  const isModalVisible = NutrientsPopUpModalStore((state) => state.isActive)
+  const setNutritionContent = NutrientsPopUpModalStore(
+    (state) => state.setNutritionContent
+  )
+  const setModalLoading = toggleLoadingScreen((state) => state.setLoading)
+
   //navigation
   const toggleFlash = () =>
     setFlashMode((current) => (current === 'torch' ? 'off' : 'torch'))
@@ -83,27 +90,45 @@ export default function CameraPage({ route, navigation }) {
     cameraRatio()
   }
 
-
+  const toggleModal = useCallback(
+    (active) => {
+      setModalVisible(true)
+      setModalLoading(true)
+      if (active) {
+        setModalLoading(false)
+        return
+      }
+    },
+    [setModalVisible, setModalLoading]
+  )
   //take image from screenshoot
-  const takePicture = async () => {
+  const takePicture = useCallback(async () => {
     try {
-      const result = await captureRef(cameraRef.current, snapshotOption)
-      // Api.post("/food", { image: result })
-      //   .then((response) => {
-      //     console.log(response.data)
-      //     setContent(response.data)
-      //   })
       //1. fetch data with result as params
       //2. set loading
       //3. set store content with response data if success
       //4. set loading false
       //5. navigate to result page
-      setNutritionContent("patrick")
-      setModalVisible()
+      toggleModal(false)
+      const result = await captureRef(cameraRef.current, snapshotOption)
+      const data = createFormDataWithImages(result)
+      setTimeout(function(){
+        //code goes here
+        toggleModal(true)
+     }, 2000);
+      // Api.post('/food', data)
+      //   .then((response) => {
+      //     console.log(response.data)
+      //     setNutritionContent(response.data)
+      //     toggleModal(true)
+      //   })
+      //   .catch((e) => {
+      //     console.log(e)
+      //   })
     } catch (e) {
       console.log(e)
     }
-  }
+  }, [image])
 
   const openMedia = async () => {
     const image = await ImagePicker.launchImageLibraryAsync(
@@ -122,42 +147,38 @@ export default function CameraPage({ route, navigation }) {
 
   const sendFetch = useCallback(
     async (imgURI) => {
-      const data = createFormData(imgURI, 1, 10)
-      //dummy content
-      // setContent('**this** is **da**ta **from** the *server*')
-      // onNavigatePress()
-      setLoading(true)
-      // await Api.post('bionic', data, {
-      //   headers: {
-      //     'Content-Type': 'multipart/form-data',
-      //   },
-      // })
-      //   .then((response) => {
-      //     const { result, result_raw, bounding_box } = response.data
-      //     if (result === '') {
-      //       alert('No text detected')
-      //     }
-      //     if (result !== undefined) {
-      //       setContent(result)
-      //     }
-      //     setLoading(false)
-      //   })
-      //   .catch((err) => {
-      //     console.log(err)
-      //   })
+      try {
+        //1. fetch data with result as params
+        //2. set loading
+        //3. set store content with response data if success
+        //4. set loading false
+        //5. navigate to result page
+        toggleModal(false)
+        const data = createFormDataWithImages(imgURI)
+        Api.post('/food', data)
+          .then((response) => {
+            setNutritionContent('result')
+            toggleModal(true)
+          })
+          .catch((e) => {
+            console.log(e)
+          })
+      } catch (e) {
+        console.log(e)
+      }
     },
     [image]
   )
 
   useEffect(() => {
-    (async function () {
+    ;(async function () {
       //3x initial render karena ada 3 setup
       setImage(null)
       checkCameraPermission()
       checkMediaPermission()
       initialCameraSetup()
     })()
-  }, [cameraPermission,checkMediaPermission])
+  }, [])
 
   if (cameraPermission === false) {
     return <LoadingView />
@@ -174,8 +195,8 @@ export default function CameraPage({ route, navigation }) {
   return (
     <SafeAreaView style={{ flex: 1 }} collapsable={false}>
       {isFocused && (
-        <ViewFullScreen>
-          <NutrientsPopUp />
+         <ViewFullScreen>
+          {isModalVisible && <NutrientsPopUp/>}
           <Camera
             style={{ flex: 1, width: screenWidth, height: screenHeight }}
             type={type}
@@ -190,7 +211,10 @@ export default function CameraPage({ route, navigation }) {
                 style={{ color: 'white' }}
                 onPress={() => openMedia()}
               />
-              <Icon_Snapshot style={{ color: 'white' }} onPress={takePicture} />
+              <Icon_Snapshot
+                style={{ color: 'white' }}
+                onPress={() => takePicture()}
+              />
               <Icon_Flash
                 style={{ color: 'white' }}
                 onPress={() => toggleFlash()}

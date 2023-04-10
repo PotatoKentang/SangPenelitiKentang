@@ -2,7 +2,6 @@ import { View } from 'react-native'
 import { Avatar, Button, Card, Text } from 'react-native-paper'
 export default function FullPageBlog(blog) {
   const { title, date, author, content, image, tags } = blog
-  const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
   return (
     <Card style={cardStyle}>
         <Card.Title

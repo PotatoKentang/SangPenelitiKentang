@@ -5,6 +5,7 @@ import { useTheme } from 'styled-components/native'
 import { Text } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Header from './header'
+import BottomSheet from './bottom-sheet'
 export default function CalculatorPage() {
   const theme = useTheme()
   const Tab = createMaterialTopTabNavigator()
@@ -17,6 +18,7 @@ export default function CalculatorPage() {
         <Tab.Screen name="UI based" component={UIBasedCalculator} />
         <Tab.Screen name="Text based" component={TextBasedCalculatorPage} />
       </Tab.Navigator>
+      <BottomSheet/>
     </>
   )
 }

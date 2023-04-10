@@ -3,11 +3,11 @@ import { useState } from 'react'
 import { Text, TouchableOpacity } from 'react-native'
 import Speaker from '../../assets/global/speaker.svg'
 import Stop from '../../assets/global/stop.svg'
-import { useTextContentStore } from '../../store/content-store'
-export default function Icon_Retake(props) {
+// import { useTextContentStore } from '../../store/content-store'
+export default function Icon_Sound(props) {
   const { text, ml } = props
   const [isSpeaking, setIsSpeaking] = useState(false)
-  const markdown = useTextContentStore((state) => state.markdown)
+  // const markdown = useTextContentStore((state) => state.markdown)
 
   const cleanText = (text) => {
     return text.replace(/\*/g, '')
@@ -15,14 +15,14 @@ export default function Icon_Retake(props) {
 
   const speak = () => {
     if (!isSpeaking) {
-      let text = cleanText(markdown)
+      // let text = cleanText(markdown)
       //make the language indonesian
       //how to get callback when the Speech is done?
-      Speech.speak(text,{language:'id-ID',onDone:function(){setIsSpeaking(false)}})
-      setIsSpeaking(true)
+      // Speech.speak(text,{language:'id-ID',onDone:function(){setIsSpeaking(false)}})
+      // setIsSpeaking(true)
     } else {
-      Speech.stop()
-      setIsSpeaking(false)
+      // Speech.stop()
+      // setIsSpeaking(false)
     }
   }
   return (
