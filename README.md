@@ -39,3 +39,6 @@ expo start --android
 5. Once the app finishes processing the image or process the calculator query, you can now see summerized nutrients contained in the foods.
 6. Additionally, you can also read blog to understand more about the malnutritions problem.
 7. And that is it! You can now use the application help you decrease the possibility of malnutritions on your day to day consumptions especially for childrens.
+
+> Finished Product
+https://expo.dev/accounts/neurologia/projects/Nutrisense/builds/0562f266-c789-42e2-92d5-4fe131ed7e06

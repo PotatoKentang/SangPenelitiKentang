@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Lexo",
-    "slug": "Lexo",
+    "name": "Nutrisense",
+    "slug": "Nutrisense",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/splashscreen/icon.png",
@@ -14,14 +14,18 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "NSCameraUsageDescription": "Lexo needs access to your Camera.",
-        "NSMicrophoneUsageDescription": "Lexo needs access to your Microphone."
+        "NSCameraUsageDescription": "Nutrisense needs access to your Camera.",
+        "NSMicrophoneUsageDescription": "Nutrisense needs access to your Microphone.",
+        "NSPhotoLibraryUsageDescription": "Allow Nutrisense to access your photos.",
+        "NSPhotoLibraryAddUsageDescription": "Allow Nutrisense to save photos."
       },
-      "bundleIdentifier": "com.gigachads.lexo"
+      "bundleIdentifier": "com.natureswitch.nutrisense"
     },
     "android": {
       "adaptiveIcon": {
@@ -30,9 +34,12 @@
       },
       "permissions": [
         "android.permission.CAMERA",
-        "android.permission.RECORD_AUDIO"
+        "android.permission.RECORD_AUDIO",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.ACCESS_MEDIA_LOCATION"
       ],
-      "package": "com.gigachads.lexo"
+      "package": "com.natureswitch.nutrisense"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -41,15 +48,15 @@
       [
         "expo-media-library",
         {
-          "photosPermission": "Allow Lexo to access your photos.",
-          "savePhotosPermission": "Allow Lexo to save photos.",
+          "photosPermission": "Allow Nutrisense to access your photos.",
+          "savePhotosPermission": "Allow Nutrisense to save photos.",
           "isAccessMediaLocationEnabled": true
         }
       ]
     ],
     "extra": {
       "eas": {
-        "projectId": "fa2e0d13-7bee-4834-b761-05e47887e728"
+        "projectId": "aa161d52-6a5b-4eac-afa1-08fcfe58a9ad"
       }
     }
   }

@@ -22,10 +22,7 @@ import Icon_Snapshot from '../../components/icons/icon-snap'
 import { ImagePickerOption, snapshotOption } from './constants'
 import { getOptimalRatio } from './methods'
 
-import {
-  NutrientsPopUpModalStore,
-  toggleLoadingScreen,
-} from '../../store/toggle-and-content-store'
+import {setContent,isModalVisible,toggleModal} from '../../utility/toggleModalPopUp'
 import { createFormDataWithImages } from '../../utility/createForm'
 import Api from '../../api'
 import NutrientsPopUp from './nutrients-pop-up'
@@ -47,18 +44,8 @@ export default function CameraPage() {
   const [ratio, setRatio] = useState(null)
   const [flashMode, setFlashMode] = useState(null)
   const cameraRef = useRef(null)
-  const [editorVisible, setEditorVisible] = useState(false)
-  const [loading, setLoading] = useState(false)
   const { height: screenHeight, width: screenWidth } = useWindowDimensions()
   const isFocused = useIsFocused()
-
-  //store
-  const setModalVisible = NutrientsPopUpModalStore((state) => state.setActive)
-  const isModalVisible = NutrientsPopUpModalStore((state) => state.isActive)
-  const setNutritionContent = NutrientsPopUpModalStore(
-    (state) => state.setNutritionContent
-  )
-  const setModalLoading = toggleLoadingScreen((state) => state.setLoading)
 
   //navigation
   const toggleFlash = () =>
@@ -90,17 +77,6 @@ export default function CameraPage() {
     cameraRatio()
   }
 
-  const toggleModal = useCallback(
-    (active) => {
-      setModalVisible(true)
-      setModalLoading(true)
-      if (active) {
-        setModalLoading(false)
-        return
-      }
-    },
-    [setModalVisible, setModalLoading]
-  )
   //take image from screenshoot
   const takePicture = useCallback(async () => {
     try {
@@ -119,7 +95,7 @@ export default function CameraPage() {
       // Api.post('/food', data)
       //   .then((response) => {
       //     console.log(response.data)
-      //     setNutritionContent(response.data)
+      //     setContent(response.data)
       //     toggleModal(true)
       //   })
       //   .catch((e) => {
@@ -157,7 +133,7 @@ export default function CameraPage() {
         const data = createFormDataWithImages(imgURI)
         Api.post('/food', data)
           .then((response) => {
-            setNutritionContent('result')
+            setContent(response)
             toggleModal(true)
           })
           .catch((e) => {
@@ -177,19 +153,12 @@ export default function CameraPage() {
       checkCameraPermission()
       checkMediaPermission()
       initialCameraSetup()
+      setModalVisible(false)
     })()
   }, [])
 
   if (cameraPermission === false) {
     return <LoadingView />
-  }
-
-  if (loading) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
-    )
   }
 
   return (

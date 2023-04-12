@@ -1,6 +1,7 @@
 import { View, FlatList, Image } from 'react-native'
 import { Searchbar, Text } from 'react-native-paper'
 import { useCallback, useState } from 'react'
+import NutrientsPopUp from './nutrients-pop-up'
 import Api from '../../api'
 import { createFormDataWithText } from '../../utility/createForm'
 export default function UIBasedCalculator() {
@@ -57,6 +58,7 @@ export default function UIBasedCalculator() {
   // console.log(ingredients.length)
   return (
     <View style={{ margin: 10 }}>
+      <NutrientsPopUp/>
       <Text variant="titleSmall">UI Nutrition Calculator</Text>
       <Searchbar
         placeholder="Search"
