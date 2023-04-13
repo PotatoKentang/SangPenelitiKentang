@@ -1,12 +1,25 @@
-import { View, FlatList, Image } from 'react-native'
+import { View, FlatList, Image,TouchableOpacity } from 'react-native'
 import { Searchbar, Text } from 'react-native-paper'
 import { useCallback, useState } from 'react'
 import NutrientsPopUp from './nutrients-pop-up'
 import Api from '../../api'
 import { createFormDataWithText } from '../../utility/createForm'
+import {
+  NutrientsPopUpModalStore,
+  toggleLoadingScreen,
+} from '../../store/toggle-and-content-store'
+
 export default function UIBasedCalculator() {
   const [searchQuery, setSearchQuery] = useState('')
   const onChangeSearch = (query) => setSearchQuery(query)
+   //store
+   const setModalVisible = NutrientsPopUpModalStore((state) => state.setActive)
+   const isModalVisible = NutrientsPopUpModalStore((state) => state.isActive)
+   const setNutritionContent = NutrientsPopUpModalStore(
+     (state) => state.setNutritionContent
+   )
+   const setModalLoading = toggleLoadingScreen((state) => state.setLoading)
+
   const [ingredients, setIngredients] = useState([
     {
       id: 9003,
@@ -44,7 +57,17 @@ export default function UIBasedCalculator() {
       name: 'gala apple',
     },
   ])
-
+  const toggleModal = useCallback(
+    (active) => {
+      setModalVisible(true)
+      setModalLoading(true)
+      if (active) {
+        setModalLoading(false)
+        return
+      }
+    },
+    [setModalVisible, setModalLoading]
+  )
   const get_ingredients_list = useCallback(() => {
     const data = createFormDataWithText(searchQuery)
     Api.post('/list_of_ingredients', data)
@@ -58,7 +81,7 @@ export default function UIBasedCalculator() {
   // console.log(ingredients.length)
   return (
     <View style={{ margin: 10 }}>
-      <NutrientsPopUp/>
+      {isModalVisible&&<NutrientsPopUp />}
       <Text variant="titleSmall">UI Nutrition Calculator</Text>
       <Searchbar
         placeholder="Search"
@@ -72,17 +95,26 @@ export default function UIBasedCalculator() {
         <FlatList
           data={ingredients}
           keyExtractor={(item) => item.id.toString()}
-          renderItem={({item:ingredient}) => (
-            <View style={{ flexDirection: 'row',gap:10,alignItems:'center',marginVertical:20 }}>
+          renderItem={({ item: ingredient }) => (
+            <TouchableOpacity
+              style={{
+                flexDirection: 'row',
+                gap: 10,
+                alignItems: 'center',
+                marginVertical: 20,
+              }}
+              onPress={()=>toggleModal(true)}
+            >
               <Image
                 source={{
                   uri:
-                    'https://spoonacular.com/cdn/ingredients_100x100/' + ingredient.image,
+                    'https://spoonacular.com/cdn/ingredients_100x100/' +
+                    ingredient.image,
                 }}
-                style={{ width: 75, height: 75, borderRadius:50}}
+                style={{ width: 75, height: 75, borderRadius: 50 }}
               />
               <Text>{ingredient.name}</Text>
-            </View>
+            </TouchableOpacity>
           )}
         />
       )}

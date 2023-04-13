@@ -18,7 +18,7 @@ export default function NutrientsPopUp() {
   )
   if (isLoading) {
     return (
-      <Portal>
+      <Portal style={{ flex: 1 }}>
       <Modal
         visible={isModalVisible}
         contentContainerStyle={{
@@ -35,7 +35,7 @@ export default function NutrientsPopUp() {
     )
   }
   return (
-    <Portal>
+    <Portal style={{ flex: 1 }}>
       <Modal
         visible={isModalVisible}
         contentContainerStyle={{
@@ -45,11 +45,12 @@ export default function NutrientsPopUp() {
           height: screenHeight/50,
           width: screenWidth/50,
         }}
+        onDismiss={() => setModalVisible(false)}
       >
         <Icon_Back text="Back" ml={7} onPress={()=>setModalVisible(false)} style={{marginTop:10,marginBottom:20}}/>
         <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding:10 }}>
           <SubTitle>List Of Foods</SubTitle>
-          
+
           <Text>{nutritionContent}</Text>
         </ScrollView>
       </Modal>

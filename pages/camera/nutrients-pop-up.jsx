@@ -3,13 +3,17 @@ import { Modal, Portal,ActivityIndicator} from 'react-native-paper'
 import Icon_Back from '../../components/icons/icon-back'
 import styled from 'styled-components/native'
 import {
-  isModalVisible,
-  setModalVisible,
-  isLoading
-} from '../../utility/toggleModalPopUp'
+  NutrientsPopUpModalStore,
+  toggleLoadingScreen,
+} from '../../store/toggle-and-content-store'
 export default function NutrientsPopUp() {
   const { height: screenHeight, width: screenWidth } = useWindowDimensions()
-  const nutritionContent = popUpModalStore(
+  const isModalVisible = NutrientsPopUpModalStore((state) => state.isActive)
+  const setModalVisible = NutrientsPopUpModalStore((state) =>
+    state.setActive
+  )
+  const isLoading = toggleLoadingScreen((state) => state.isLoading)
+  const nutritionContent = NutrientsPopUpModalStore(
     (state) => state.nutritionContent
   )
   const result = [
@@ -43,7 +47,7 @@ export default function NutrientsPopUp() {
 
   if (isLoading) {
     return (
-      <Portal>
+      <Portal style={{ flex: 1 }}>
       <Modal
         visible={isModalVisible}
         contentContainerStyle={{
@@ -60,7 +64,7 @@ export default function NutrientsPopUp() {
     )
   }
   return (
-    <Portal>
+    <Portal style={{ flex: 1 }}>
       <Modal
         visible={isModalVisible}
         contentContainerStyle={{

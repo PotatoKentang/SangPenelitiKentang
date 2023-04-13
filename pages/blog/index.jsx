@@ -4,16 +4,20 @@ import BlogItem from './blog-item'
 import FullPageBlog from './fullpage-blog'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Header from './header'
-import BlogList from './blog-list'
-import {
-  isModalVisible,
-  setModalVisible,
-  isLoading
-} from '../../utility/toggleModalPopUp'
+import BlogList from './blog-content-list'
+import { NutrientsPopUpModalStore, toggleLoadingScreen } from '../../store/toggle-and-content-store'
+
+// import {
+//   isModalVisible,
+//   setModalVisible,
+//   isLoading
+// } from '../../utility/toggleModalPopUp'
 export default function BlogPage({ route, navigation }) {
   const theme = useTheme()
   //do some fetching to the backend
   const blogs = BlogList()
+  const isModalVisible = NutrientsPopUpModalStore((state) => state.isActive)
+
   return (
     <SafeAreaView style={{ backgroundColor: 'white' }}>
       {isModalVisible && <FullPageBlog/>}

@@ -9,7 +9,7 @@ export default function CalculatorPage() {
   return (
     <>
       <SafeAreaView style={{ backgroundColor: 'white' }}>
-        <Header />
+      <Header />
       </SafeAreaView>
       <Tab.Navigator initialRouteName="UI based">
         <Tab.Screen name="UI based" component={UIBasedCalculator} />

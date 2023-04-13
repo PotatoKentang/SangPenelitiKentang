@@ -1,5 +1,5 @@
 import { View, Text, useWindowDimensions, ScrollView } from 'react-native'
-import { Modal, Portal, ActivityIndicator } from 'react-native-paper'
+import { Modal, Portal, ActivityIndicator,Card } from 'react-native-paper'
 import Icon_Back from '../../components/icons/icon-back'
 import styled from 'styled-components/native'
 import {
@@ -16,7 +16,7 @@ export default function FullPageBlog(blog) {
   const nutritionContent = NutrientsPopUpModalStore(
     (state) => state.nutritionContent
   )
-  
+
   if (isLoading) {
     return (
       <Portal>
@@ -34,7 +34,7 @@ export default function FullPageBlog(blog) {
         </Modal>
       </Portal>
     )
-  }
+  } 
   return (
     <Portal>
       <Modal
@@ -46,6 +46,8 @@ export default function FullPageBlog(blog) {
           height: screenHeight,
           width: screenWidth,
         }}
+        onDismiss={() => setModalVisible(false)}
+
       >
         <Icon_Back
           text="Back"
@@ -67,7 +69,15 @@ export default function FullPageBlog(blog) {
     </Portal>
   )
 }
-
+const cardStyle = {
+  width: 300,
+  height: 300,
+  margin: 10,
+  padding: 10,
+  borderRadius: 10,
+  backgroundColor: '#fff',
+  shadowColor: '#000'
+}
 const ListContainer = styled.View`
   display: flex;
   flex-direction: row;

@@ -1,9 +1,32 @@
-import { View, Image } from 'react-native'
+import { useCallback } from 'react'
 import { Avatar, Button, Card, Text } from 'react-native-paper'
-import { useNavigation } from '@react-navigation/native'
+import { NutrientsPopUpModalStore, toggleLoadingScreen } from '../../store/toggle-and-content-store'
 export default function BlogItem(props) {
   const { title, date, author, content, image, tags } = props.blog
-  const navigation = useNavigation()
+  //store
+  const setModalVisible = NutrientsPopUpModalStore((state) => state.setActive)
+  const isModalVisible = NutrientsPopUpModalStore((state) => state.isActive)
+  const setNutritionContent = NutrientsPopUpModalStore(
+    (state) => state.setNutritionContent
+  )
+  const setModalLoading = toggleLoadingScreen((state) => state.setLoading)
+
+  const toggleModal = useCallback(
+    (active) => {
+      setModalVisible(true)
+      setModalLoading(true)
+      if (active) {
+        setModalLoading(false)
+      }
+    },
+    [setModalVisible, setModalLoading]
+  )
+
+  const fetchData = () => {
+    // toggleModal(false)
+    console.log('fetching data')
+    toggleModal(true)
+  }
   return (
     <Card style={{ marginVertical:3}}>
       <Card.Title title={title}/>
@@ -14,7 +37,7 @@ export default function BlogItem(props) {
       </Card.Content>
       <Card.Actions>
         <Button style={{ display: 'none' }}>Cancel</Button>
-        <Button onClick={() => console.log('navigate to the post')}>
+        <Button onPress={() => fetchData()}>
           Read More
         </Button>
       </Card.Actions>
