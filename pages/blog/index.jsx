@@ -5,22 +5,22 @@ import FullPageBlog from './fullpage-blog'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Header from './header'
 import BlogList from './blog-content-list'
-import { NutrientsPopUpModalStore, toggleLoadingScreen } from '../../store/toggle-and-content-store'
+import {
+  blogModal,
+} from '../../store/toggle-and-content-store'
 
-// import {
-//   isModalVisible,
-//   setModalVisible,
-//   isLoading
-// } from '../../utility/toggleModalPopUp'
-export default function BlogPage({ route, navigation }) {
+export default function BlogPage() {
   const theme = useTheme()
   //do some fetching to the backend
   const blogs = BlogList()
-  const isModalVisible = NutrientsPopUpModalStore((state) => state.isActive)
+  const isModalVisible = blogModal((state) => state.isActive)
+  
+  if(isModalVisible) {
+    return <FullPageBlog />
+  }
 
   return (
     <SafeAreaView style={{ backgroundColor: 'white' }}>
-      {isModalVisible && <FullPageBlog/>}
       <Header />
       <ScrollView style={BlogContainer} contentContainerStyle={WrapBlogItem}>
         {blogs.map((blog, index) => {
@@ -33,7 +33,7 @@ export default function BlogPage({ route, navigation }) {
 
 const BlogContainer = {
   width: '100%',
-  paddingHorizontal:10
+  paddingHorizontal: 10,
 }
 const WrapBlogItem = {
   display: 'flex',
@@ -41,5 +41,5 @@ const WrapBlogItem = {
   flexDirection: 'row',
   flexWrap: 'wrap',
   justifyContent: 'space-evenly',
-  paddingBottom:100
+  paddingBottom: 100,
 }

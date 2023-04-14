@@ -79,7 +79,7 @@ export default function App({ navigation, route }) {
             >
               <Tab.Screen
                 name={routesName.home}
-                component={HomeScreen}
+                component={CameraScreen}
                 options={{
                   headerShown: false,
                   tabBarLabel: routesName.home,
@@ -92,7 +92,7 @@ export default function App({ navigation, route }) {
                   ),
                 }}
               />
-              <Tab.Screen
+              {/* <Tab.Screen
                 name={routesName.camera}
                 component={CameraScreen}
                 options={{
@@ -109,7 +109,7 @@ export default function App({ navigation, route }) {
                     />
                   ),
                 }}
-              />
+              /> */}
               <Tab.Screen
                 name={routesName.calculator}
                 component={CalculatorScreen}

@@ -22,7 +22,7 @@ import Icon_Snapshot from '../../components/icons/icon-snap'
 import { ImagePickerOption, snapshotOption } from './constants'
 import { getOptimalRatio } from './methods'
 import {
-  NutrientsPopUpModalStore,
+  cameraModal,
   toggleLoadingScreen,
 } from '../../store/toggle-and-content-store'
 import { createFormDataWithImages } from '../../utility/createForm'
@@ -52,11 +52,9 @@ export default function CameraPage() {
   const isFocused = useIsFocused()
 
   //store
-  const setModalVisible = NutrientsPopUpModalStore((state) => state.setActive)
-  const isModalVisible = NutrientsPopUpModalStore((state) => state.isActive)
-  const setNutritionContent = NutrientsPopUpModalStore(
-    (state) => state.setNutritionContent
-  )
+  const setModalVisible = cameraModal((state) => state.setActive)
+  const isModalVisible = cameraModal((state) => state.isActive)
+  const setNutritionContent = cameraModal((state) => state.setContent)
   const setModalLoading = toggleLoadingScreen((state) => state.setLoading)
 
   //navigation
@@ -111,10 +109,10 @@ export default function CameraPage() {
       toggleModal(false)
       const result = await captureRef(cameraRef.current, snapshotOption)
       const data = createFormDataWithImages(result)
-      setTimeout(function(){
+      setTimeout(function () {
         //code goes here
         toggleModal(true)
-     }, 2000);
+      }, 2000)
       // Api.post('/food', data)
       //   .then((response) => {
       //     console.log(response.data)
@@ -194,8 +192,8 @@ export default function CameraPage() {
   return (
     <SafeAreaView style={{ flex: 1 }} collapsable={false}>
       {isFocused && (
-         <ViewFullScreen>
-          {isModalVisible && <NutrientsPopUp/>}
+        <ViewFullScreen>
+          {isModalVisible && <NutrientsPopUp />}
           <Camera
             style={{ flex: 1, width: screenWidth, height: screenHeight }}
             type={type}

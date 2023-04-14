@@ -1,30 +1,58 @@
-import { create } from 'zustand'
+import {
+  create
+} from 'zustand'
 
 export const BottomSheetStore = create((set) => ({
-  isActive:false,
-  content:[],
-  setActive: (active) => set((state) => ({ isActive: active })),
-  setContent: (content) => set((state) => ({ content: content })),
+  isActive: true,
+  content: [],
+  setActive: (active) => set((state) => ({
+    isActive: active
+  })),
+  setContent: (content) => set((state) => ({
+    content: content
+  })),
 }))
 
-export const NutrientsPopUpModalStore = create((set) => ({
-  isActive:false,
-  setActive: (active) => set((state) => ({ isActive: active })),
-  nutritionContent: '',
-  setNutritionContent: (nutritionContent) =>
+export const cameraModal = create((set) => ({
+  isActive: false,
+  setActive: (active) => set((state) => ({
+    isActive: active
+  })),
+  content: '',
+  setContent: (content) =>
     set((state) => ({
-      nutritionContent: nutritionContent,
+      content: content,
     })),
 }))
 
-export const popUpModalStore = create((set) => ({
-  isActive:false,
-  setActive: (active) => set((state) => ({ isActive: active })),
+export const calculatorModal = create((set) => ({
+  isActive: false,
+  setActive: (active) => set((state) => ({
+    isActive: active
+  })),
   content: '',
-  setContent: (content) => set((state) => ({ content: content })),
+  setContent: (content) =>
+    set((state) => ({
+      content: content,
+    })),
 }))
 
+export const blogModal = create((set) => ({
+  isActive: false,
+  setActive: (active) => set((state) => ({
+    isActive: active
+  })),
+  content: {},
+  setContent: (content) =>
+    set((state) => ({
+      content: content,
+    })),
+}))
+
+
 export const toggleLoadingScreen = create((set) => ({
-  isLoading:false,
-  setLoading: (loading) => set((state) => ({ isLoading: loading })),
+  isLoading: false,
+  setLoading: (loading) => set((state) => ({
+    isLoading: loading
+  })),
 }))

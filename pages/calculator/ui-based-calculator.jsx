@@ -1,24 +1,22 @@
-import { View, FlatList, Image,TouchableOpacity } from 'react-native'
-import { Searchbar, Text } from 'react-native-paper'
+import { View, FlatList, Image, TouchableOpacity } from 'react-native'
+import { Portal, Searchbar, Text } from 'react-native-paper'
 import { useCallback, useState } from 'react'
 import NutrientsPopUp from './nutrients-pop-up'
 import Api from '../../api'
 import { createFormDataWithText } from '../../utility/createForm'
 import {
-  NutrientsPopUpModalStore,
+  calculatorModal,
   toggleLoadingScreen,
 } from '../../store/toggle-and-content-store'
 
 export default function UIBasedCalculator() {
   const [searchQuery, setSearchQuery] = useState('')
   const onChangeSearch = (query) => setSearchQuery(query)
-   //store
-   const setModalVisible = NutrientsPopUpModalStore((state) => state.setActive)
-   const isModalVisible = NutrientsPopUpModalStore((state) => state.isActive)
-   const setNutritionContent = NutrientsPopUpModalStore(
-     (state) => state.setNutritionContent
-   )
-   const setModalLoading = toggleLoadingScreen((state) => state.setLoading)
+  //store
+  const setModalVisible = calculatorModal((state) => state.setActive)
+  const isModalVisible = calculatorModal((state) => state.isActive)
+  const setCalculatorContent = calculatorModal((state) => state.setContent)
+  const setModalLoading = toggleLoadingScreen((state) => state.setLoading)
 
   const [ingredients, setIngredients] = useState([
     {
@@ -81,7 +79,7 @@ export default function UIBasedCalculator() {
   // console.log(ingredients.length)
   return (
     <View style={{ margin: 10 }}>
-      {isModalVisible&&<NutrientsPopUp />}
+      {isModalVisible && <Portal><NutrientsPopUp/></Portal>}
       <Text variant="titleSmall">UI Nutrition Calculator</Text>
       <Searchbar
         placeholder="Search"
@@ -95,6 +93,7 @@ export default function UIBasedCalculator() {
         <FlatList
           data={ingredients}
           keyExtractor={(item) => item.id.toString()}
+          contentContainerStyle={{paddingBottom:100}}
           renderItem={({ item: ingredient }) => (
             <TouchableOpacity
               style={{
@@ -103,7 +102,7 @@ export default function UIBasedCalculator() {
                 alignItems: 'center',
                 marginVertical: 20,
               }}
-              onPress={()=>toggleModal(true)}
+              onPress={() => {setCalculatorContent(ingredient) & toggleModal(true)}}
             >
               <Image
                 source={{

@@ -1,25 +1,21 @@
 import { View, Text, useWindowDimensions, ScrollView } from 'react-native'
-import { Modal, Portal, ActivityIndicator,Card } from 'react-native-paper'
+import { Modal, Portal, ActivityIndicator, Card,Chip  } from 'react-native-paper'
 import Icon_Back from '../../components/icons/icon-back'
 import styled from 'styled-components/native'
 import {
-  NutrientsPopUpModalStore,
+  blogModal,
   toggleLoadingScreen,
 } from '../../store/toggle-and-content-store'
-export default function FullPageBlog(blog) {
-  const { title, date, author, content, image, tags } = blog
+export default function FullPageBlog() {
   const { height: screenHeight, width: screenWidth } = useWindowDimensions()
-  const isModalVisible = NutrientsPopUpModalStore((state) => state.isActive)
-  const setModalVisible = NutrientsPopUpModalStore((state) => state.setActive)
+  const isModalVisible = blogModal((state) => state.isActive)
+  const setModalVisible = blogModal((state) => state.setActive)
   const isLoading = toggleLoadingScreen((state) => state.isLoading)
-
-  const nutritionContent = NutrientsPopUpModalStore(
-    (state) => state.nutritionContent
-  )
-
+  const blogContent = blogModal((state) => state.content)
+  const { title, date, author, content, image, tags } = blogContent
+  console.log(title, date, author, content, image, tags)
   if (isLoading) {
     return (
-      <Portal>
         <Modal
           visible={isModalVisible}
           contentContainerStyle={{
@@ -28,15 +24,15 @@ export default function FullPageBlog(blog) {
             flex: 1,
             height: screenHeight / 50,
             width: screenWidth / 50,
+            margin: 0,
           }}
         >
           <ActivityIndicator animating={true} size="large" color="#0000ff" />
         </Modal>
-      </Portal>
+
     )
-  } 
+  }
   return (
-    <Portal>
       <Modal
         visible={isModalVisible}
         contentContainerStyle={{
@@ -47,7 +43,6 @@ export default function FullPageBlog(blog) {
           width: screenWidth,
         }}
         onDismiss={() => setModalVisible(false)}
-
       >
         <Icon_Back
           text="Back"
@@ -55,29 +50,29 @@ export default function FullPageBlog(blog) {
           onPress={() => setModalVisible(false)}
           style={{ marginTop: 10, marginBottom: 20 }}
         />
-        <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 10 }}>
-          <Card style={cardStyle}>
-            <Card.Title title="Card Title" subtitle="Card Subtitle" />
+        <ScrollView contentContainerStyle={{ padding: 10 }}>
+          <Card>
+            <Card.Title titleStyle={{ textWrap:'wrap' }} title={title} subtitle={author}/>
             <Card.Cover source={{ uri: 'https://picsum.photos/250' }} />
             <Card.Content>
-              <Text variant="titleLarge">Card title</Text>
-              <Text variant="bodyMedium">Card content</Text>
+              <Text variant="titleLarge" style={{ marginVertical:20 }}>{content}</Text>
+              <Text variant="bodyMedium">{tags!=null&&
+              [...tags].map((tag,index)=><Chip key={index} style={{margin:5}}>{tag}</Chip>)
+              }</Text>
             </Card.Content>
           </Card>
         </ScrollView>
       </Modal>
-    </Portal>
   )
 }
-const cardStyle = {
-  width: 300,
-  height: 300,
-  margin: 10,
-  padding: 10,
-  borderRadius: 10,
-  backgroundColor: '#fff',
-  shadowColor: '#000'
-}
+// const cardStyle = {
+//   width: 300,
+//   margin: 10,
+//   padding: 10,
+//   borderRadius: 10,
+//   backgroundColor: '#fff',
+//   shadowColor: '#000',
+// }
 const ListContainer = styled.View`
   display: flex;
   flex-direction: row;

@@ -1,13 +1,12 @@
 import { useCallback } from 'react'
 import { Avatar, Button, Card, Text } from 'react-native-paper'
-import { NutrientsPopUpModalStore, toggleLoadingScreen } from '../../store/toggle-and-content-store'
+import { blogModal, toggleLoadingScreen } from '../../store/toggle-and-content-store'
 export default function BlogItem(props) {
   const { title, date, author, content, image, tags } = props.blog
   //store
-  const setModalVisible = NutrientsPopUpModalStore((state) => state.setActive)
-  const isModalVisible = NutrientsPopUpModalStore((state) => state.isActive)
-  const setNutritionContent = NutrientsPopUpModalStore(
-    (state) => state.setNutritionContent
+  const setModalVisible = blogModal((state) => state.setActive)
+  const setModalContent = blogModal(
+    (state) => state.setContent
   )
   const setModalLoading = toggleLoadingScreen((state) => state.setLoading)
 
@@ -24,7 +23,8 @@ export default function BlogItem(props) {
 
   const fetchData = () => {
     // toggleModal(false)
-    console.log('fetching data')
+    // console.log('fetching data')
+    setModalContent(props.blog)
     toggleModal(true)
   }
   return (

@@ -3,18 +3,18 @@ import { Modal, Portal,ActivityIndicator} from 'react-native-paper'
 import Icon_Back from '../../components/icons/icon-back'
 import styled from 'styled-components/native'
 import {
-  NutrientsPopUpModalStore,
+  cameraModal,
   toggleLoadingScreen,
 } from '../../store/toggle-and-content-store'
 export default function NutrientsPopUp() {
   const { height: screenHeight, width: screenWidth } = useWindowDimensions()
-  const isModalVisible = NutrientsPopUpModalStore((state) => state.isActive)
-  const setModalVisible = NutrientsPopUpModalStore((state) =>
+  const isModalVisible = cameraModal((state) => state.isActive)
+  const setModalVisible = cameraModal((state) =>
     state.setActive
   )
   const isLoading = toggleLoadingScreen((state) => state.isLoading)
-  const nutritionContent = NutrientsPopUpModalStore(
-    (state) => state.nutritionContent
+  const nutritionContent = cameraModal(
+    (state) => state.setContent
   )
   const result = [
     {
@@ -73,9 +73,11 @@ export default function NutrientsPopUp() {
           flex: 1,
           height: screenHeight,
           width: screenWidth,
+          margin:0,
         }}
       >
         <Icon_Back text="Back" ml={7} onPress={()=>setModalVisible(false)} style={{marginTop:10,marginBottom:20}}/>
+        <Button text="Look at predicted Images"/>
         <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding:10 }}>
           <SubTitle>List Of Foods</SubTitle>
           {nutrients.map((item, index) => {
