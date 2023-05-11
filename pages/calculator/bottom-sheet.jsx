@@ -5,7 +5,8 @@ import { BottomSheetStore } from '../../store/toggle-and-content-store'
 export default function BottomSheetSection() {
   const snapPoints = useMemo(() => ['5%','30%', '50%', '100%'], [])
   const sheetRef = useRef(null)
-  const bottomSheetisActive = BottomSheetStore((state) => state.isActive)
+  const bottomSheetIsActive = BottomSheetStore((state) => state.isActive)
+  const bottomSheetContent = BottomSheetStore((state) => state.content)
   const handleSheetChange = useCallback((index) => {}, [])
 
   const handleSnapPress = useCallback((index) => {
@@ -16,7 +17,7 @@ export default function BottomSheetSection() {
     sheetRef.current?.close()
   }, [])
 
-  if (!bottomSheetisActive) {
+  if (!bottomSheetIsActive) {
     return null
   }
   return (
@@ -31,7 +32,12 @@ export default function BottomSheetSection() {
           backgroundColor: 'white',
           padding:20
         }}>
-          <Text>hi</Text>
+          {Array.from(bottomSheetContent).map(([key,value],index)=>{
+            return (<View key={index} style={{ display:'flex',flexDirection:'row',justifyContent:'space-between' }}>
+              <Text>{key}</Text>
+              <Text>{value}</Text>
+            </View>)
+          })}
         </ScrollView>
       </BottomSheet>
   )

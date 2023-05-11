@@ -65,14 +65,7 @@ export default function FullPageBlog() {
       </Modal>
   )
 }
-// const cardStyle = {
-//   width: 300,
-//   margin: 10,
-//   padding: 10,
-//   borderRadius: 10,
-//   backgroundColor: '#fff',
-//   shadowColor: '#000',
-// }
+
 const ListContainer = styled.View`
   display: flex;
   flex-direction: row;

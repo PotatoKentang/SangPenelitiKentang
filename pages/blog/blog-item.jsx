@@ -27,6 +27,7 @@ export default function BlogItem(props) {
     setModalContent(props.blog)
     toggleModal(true)
   }
+  //ganti card jadi style sesuka lu
   return (
     <Card style={{ marginVertical:3}}>
       <Card.Title title={title}/>

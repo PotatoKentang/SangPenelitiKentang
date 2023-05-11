@@ -4,7 +4,10 @@ import {
 
 export const BottomSheetStore = create((set) => ({
   isActive: true,
-  content: [],
+  content: new Map([
+    ["nutritions",12],
+    ["calcium",10]
+  ]),
   setActive: (active) => set((state) => ({
     isActive: active
   })),
@@ -29,6 +32,10 @@ export const calculatorModal = create((set) => ({
   isActive: false,
   setActive: (active) => set((state) => ({
     isActive: active
+  })),
+  isLoading: false,
+  setIsLoading: (loading) => set((state) => ({
+    isLoading: loading
   })),
   content: '',
   setContent: (content) =>

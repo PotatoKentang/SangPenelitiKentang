@@ -13,7 +13,7 @@ export default function TextBasedCalculatorPage() {
     Api.post('/get_nutrients', formData)
       .then((response) => {
         // console.log(response.data)
-        // toggleSheet(res)
+        // toggleSheet()
       })
       .catch((err) => {
         console.log(err)

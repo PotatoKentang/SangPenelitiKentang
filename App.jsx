@@ -36,18 +36,6 @@ export default function App({ navigation, route }) {
     'Jakarta-m': require('./assets/fonts/PlusJakartaSans-Medium.ttf'),
     'Jakarta-sb': require('./assets/fonts/PlusJakartaSans-SemiBold.ttf'),
     'Jakarta-b': require('./assets/fonts/PlusJakartaSans-Bold.ttf'),
-    'RobotoSerif-m': require('./assets/fonts/RobotoSerif-Medium.ttf'),
-    'RobotoSerif-sb': require('./assets/fonts/RobotoSerif-SemiBold.ttf'),
-    'RobotoSerif-b': require('./assets/fonts/RobotoSerif-Bold.ttf'),
-    'PTSerif-r': require('./assets/fonts/PTSerif-Regular.ttf'),
-    'PTSerif-b': require('./assets/fonts/PTSerif-Bold.ttf'),
-    'Inter-m': require('./assets/fonts/Inter-Medium.ttf'),
-    'Inter-sb': require('./assets/fonts/Inter-SemiBold.ttf'),
-    'Inter-b': require('./assets/fonts/Inter-Bold.ttf'),
-    'OpenDyslexic3-r': require('./assets/fonts/OpenDyslexic3-Regular.ttf'),
-    'OpenDyslexic3-b': require('./assets/fonts/OpenDyslexic3-Bold.ttf'),
-    'Comic-r': require('./assets/fonts/ComicNeue-Regular.ttf'),
-    'Comic-b': require('./assets/fonts/ComicNeue-Bold.ttf'),
   })
 
   const onLayoutRootView = useCallback(async () => {
@@ -92,24 +80,6 @@ export default function App({ navigation, route }) {
                   ),
                 }}
               />
-              {/* <Tab.Screen
-                name={routesName.camera}
-                component={CameraScreen}
-                options={{
-                  headerShown: false,
-                  // tabBarLabel: routesName.about,
-                  style: {
-                    display: 'none',
-                  },
-                  tabBarIcon: ({ color }) => (
-                    <MaterialCommunityIcons
-                      name="camera-outline"
-                      color={color}
-                      size={26}
-                    />
-                  ),
-                }}
-              /> */}
               <Tab.Screen
                 name={routesName.calculator}
                 component={CalculatorScreen}
