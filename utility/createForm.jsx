@@ -1,3 +1,5 @@
+
+
 export const createFormDataWithImages = (image) => {
   const data = new FormData()
   data.append('image', {
@@ -7,6 +9,8 @@ export const createFormDataWithImages = (image) => {
   })
   return data
 }
+
+
 export const createFormDataWithText = (query) => {
   const data = new FormData()
   data.append('query',query)

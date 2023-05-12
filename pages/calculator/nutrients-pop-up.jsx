@@ -14,44 +14,63 @@ import {
   calculatorModal,
   toggleLoadingScreen,
 } from '../../store/toggle-and-content-store'
-import { useState, useEffect } from 'react'
-import { Directions } from 'react-native-gesture-handler'
+import { useState, useEffect, useCallback } from 'react'
+import { endPoints } from '../../utility/endPoints'
+import Api from '../../api'
+import { BottomSheetStore } from '../../store/toggle-and-content-store'
 export default function NutrientsPopUp() {
   const { height: screenHeight, width: screenWidth } = useWindowDimensions()
   const isModalVisible = calculatorModal((state) => state.isActive)
   const setModalVisible = calculatorModal((state) => state.setActive)
   const setLoading = calculatorModal((state) => state.setLoading)
   const isLoading = calculatorModal((state) => state.isLoading)
-  const nutritionContent = calculatorModal((state) => state.nutritionContent)
-  const [totalAmount, setTotalAmount] = useState(0)
-  const [totalServings, setTotalServings] = useState(0)
-  const [totalNutrients, setTotalNutrients] = useState([{name:'test'},{amount:1}])
-  useEffect(() => {
-    if (nutritionContent) {
-      setLoading(false)
+  const nutritionContent = calculatorModal((state) => state.content)
+  const [totalAmount, setTotalAmount] = useState('')
+  const [totalServings, setTotalServings] = useState('')
+  const setContent = BottomSheetStore((state) => state.setContent)
+  const content = BottomSheetStore((state) => state.content)
+  const [totalNutrients, setTotalNutrients] = useState([
+    { name: 'test', amount: 1 },
+  ])
 
-      //dummy
-      // totalNutrients([[nutrients, 1]])
-
-      // Api.post('/get_nutrients', createFormDataWithText(nutritionContent.name))
-      //   .then((response) => {
-      //     totalNutrients(response.data)
-      //     setModalLoading(false)
-      //   })
-      //   .catch((err) => {
-      //     console.log(err)
-      //     setModalLoading(false)
-      //   })
+  const formatResult = (foodNames, results) => {
+    const mergedObject = {
+      foodNames: [...content['foodNames'], foodNames],
+      nutrients: [...content['nutrients']],
     }
-  }, [nutritionContent])
-
-  useEffect(() => {
-    console.log(totalAmount,totalServings)
-  },[totalAmount,totalServings])
-
-  const addNutritionToList = () =>{
-    setModalVisible(false)
+    results.forEach((nutrition) => {
+      const existingNutrientIndex = mergedObject.nutrients.findIndex(
+        (nutrient) => nutrient.name === nutrition.name
+      )
+      if (existingNutrientIndex === -1) {
+        mergedObject.nutrients.push(nutrition)
+      } else {
+        mergedObject.nutrients[existingNutrientIndex].amount += nutrition.amount
+      }
+    })
+    return mergedObject
   }
+
+  const addNutritionToList = useCallback(async () => {
+    try {
+      await setLoading(true)
+      //PERHATIIN INI
+      // const data = new FormData()
+      // data.append('amount', totalAmount)
+      // data.append('units', totalServings)
+      const ingredientsByID = await Api.post(
+        endPoints.list_of_ingredients_by_id(nutritionContent.id)
+      )
+      const result = await ingredientsByID.data.nutrition.nutrients
+      const formatedResult = await formatResult(nutritionContent.name, result)
+      await setContent(formatedResult)
+      await setLoading(false)
+    } catch (err) {
+      console.log(err)
+      setLoading(false)
+    }
+    setModalVisible(false)
+  }, [totalAmount, totalServings, nutritionContent.id])
 
   if (isLoading) {
     return (
@@ -93,37 +112,28 @@ export default function NutrientsPopUp() {
       }}
       onDismiss={() => setModalVisible(false)}
     >
-      {/* flat list of the nutrients */}
-      {/* <FlatList
-          data={totalNutrients}
-          keyExtractor={(item) => Object.keys(item)[0]}
-          contentContainerStyle={{paddingBottom:100}}
-          renderItem={({ item }) =>(
-            <View>
-              <Text>{Object.keys(item)}</Text>
-              <Text>{Object.values(item)}</Text>
-            </View>
-          )}
-        /> */}
-      {/* <ScrollView> */}
-      {totalNutrients.map((nutrient, index) => {
-        return (
-          <View key={index} style={{ display:'flex',flexDirection:'row',justifyContent:'space-between' }}>
-            <View style={{ width:'35%',justifyContent:'space-between',flexDirection:'row' }}>
-              <Text>{Object.keys(nutrient)}</Text>
-              <Text>:</Text>
-            </View>
-            <Text>{Object.values(nutrient)}</Text>
-          </View>
-        )
-      })}
+      <SubTitle>{nutritionContent.name}</SubTitle>
       <Text>Amount:</Text>
-      <TextInput style={{marginVertical:10, borderWidth:1,padding:5}} onChangeText={setTotalAmount} placeholder='10'/>
+      <TextInput
+        style={{ marginVertical: 10, borderWidth: 1, padding: 5 }}
+        onChangeText={setTotalAmount}
+        placeholder="10"
+      />
       <Text>Serving Portions:</Text>
-      <TextInput style={{marginVertical:10, borderWidth:1,padding:5}} onChangeText={setTotalServings} placeholder='5 (grams, onz, ml)'/>
-      <View style={{ display:'flex', flexDirection:'row',justifyContent:'flex-end'}}>
+      <TextInput
+        style={{ marginVertical: 10, borderWidth: 1, padding: 5 }}
+        onChangeText={setTotalServings}
+        placeholder="5 (grams, onz, ml)"
+      />
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'flex-end',
+        }}
+      >
         <Button title="Cancel" onPress={() => setModalVisible(false)} />
-        <View style={{width:5}}/>
+        <View style={{ width: 5 }} />
         <Button title="Confirm" onPress={() => addNutritionToList()} />
       </View>
       {/* </ScrollView> */}
@@ -143,5 +153,4 @@ const SubTitle = styled.Text`
   font-size: 16px;
   font-weight: 500;
   color: #000;
-  margin-horizontal: 10px;
 `

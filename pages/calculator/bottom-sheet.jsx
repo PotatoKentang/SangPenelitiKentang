@@ -7,35 +7,32 @@ export default function BottomSheetSection() {
   const sheetRef = useRef(null)
   const bottomSheetIsActive = BottomSheetStore((state) => state.isActive)
   const bottomSheetContent = BottomSheetStore((state) => state.content)
-  const handleSheetChange = useCallback((index) => {}, [])
 
-  const handleSnapPress = useCallback((index) => {
-    sheetRef.current?.snapToIndex(index)
-  }, [])
-
-  const handleClosePress = useCallback(() => {
-    sheetRef.current?.close()
-  }, [])
 
   if (!bottomSheetIsActive) {
     return null
   }
+
   return (
       <BottomSheet
         ref={sheetRef}
         snapPoints={snapPoints}
         initialSnapIndex={0}
-        onChange={handleSheetChange}
       >
         <ScrollView contentContainerStyle={{
           flex: 1,
           backgroundColor: 'white',
           padding:20
         }}>
-          {Array.from(bottomSheetContent).map(([key,value],index)=>{
+          <Text>List Of Food</Text>
+          {bottomSheetContent["foodNames"]&&bottomSheetContent["foodNames"].map((item,index)=>{
+            return (<Text key={index}>{item}</Text>)
+          })}
+          <Text>Nutrients</Text>
+          {bottomSheetContent["nutrients"]&&bottomSheetContent["nutrients"].map((item,index)=>{
             return (<View key={index} style={{ display:'flex',flexDirection:'row',justifyContent:'space-between' }}>
-              <Text>{key}</Text>
-              <Text>{value}</Text>
+              <Text>{item["name"]}</Text>
+              <Text>{item["amount"]} {item["unit"]}</Text>
             </View>)
           })}
         </ScrollView>

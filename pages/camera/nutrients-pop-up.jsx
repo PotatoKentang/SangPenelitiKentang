@@ -1,4 +1,4 @@
-import { View, Text, useWindowDimensions,ScrollView } from 'react-native'
+import { View, Text, useWindowDimensions,ScrollView, Button } from 'react-native'
 import { Modal, Portal,ActivityIndicator} from 'react-native-paper'
 import Icon_Back from '../../components/icons/icon-back'
 import styled from 'styled-components/native'
@@ -16,34 +16,34 @@ export default function NutrientsPopUp() {
   const nutritionContent = cameraModal(
     (state) => state.setContent
   )
-  const result = [
-    {
-      name: 'Energy',
-      value: '100',
-    },
-    {
-      name: 'Protein',
-      value: '100',
-    },
-    {
-      name: 'Fat',
-      value: '100',
-    },
-  ]
-  const nutrients = [
-    {
-      name: 'Energy',
-      value: '100',
-    },
-    {
-      name: 'Protein',
-      value: '100',
-    },
-    {
-      name: 'Fat',
-      value: '100',
-    },
-  ]
+  // const result = [
+  //   {
+  //     name: 'Energy',
+  //     value: '100',
+  //   },
+  //   {
+  //     name: 'Protein',
+  //     value: '100',
+  //   },
+  //   {
+  //     name: 'Fat',
+  //     value: '100',
+  //   },
+  // ]
+  // const nutrients = [
+  //   {
+  //     name: 'Energy',
+  //     value: '100',
+  //   },
+  //   {
+  //     name: 'Protein',
+  //     value: '100',
+  //   },
+  //   {
+  //     name: 'Fat',
+  //     value: '100',
+  //   },
+  // ]
 
   if (isLoading) {
     return (
@@ -77,27 +77,26 @@ export default function NutrientsPopUp() {
         }}
       >
         <Icon_Back text="Back" ml={7} onPress={()=>setModalVisible(false)} style={{marginTop:10,marginBottom:20}}/>
-        <Button text="Look at predicted Images"/>
         <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding:10 }}>
           <SubTitle>List Of Foods</SubTitle>
-          {nutrients.map((item, index) => {
+          {nutritionContent["image"] && nutritionContent["image"].map((item, index) => {
             return (
               <ListContainer key={index}>
-                <Text>{item.name}</Text>
-                <Text>{item.value}</Text>
+                <Text>{item}</Text>
               </ListContainer>
             )
           })}
+          {!nutritionContent["image"]&& <SubTitle>No food found</SubTitle>}
           <SubTitle>Nutrients</SubTitle>
-          {result.map((item, index) => {
+          {nutritionContent["query"] && nutritionContent["query"].map((item, index) => {
             return (
               <ListContainer key={index}>
-                <Text>{item.name}</Text>
-                <Text>{item.value}</Text>
+                <Text>{Object.keys(item)}</Text>
+                <Text>{Object.values(item)}</Text>
               </ListContainer>
             )
           })}
-          <Text>{nutritionContent}</Text>
+          {!nutritionContent["query"]&& <SubTitle>No nutrients found</SubTitle>}
         </ScrollView>
       </Modal>
     </Portal>

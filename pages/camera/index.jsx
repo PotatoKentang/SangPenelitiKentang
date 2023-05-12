@@ -27,6 +27,7 @@ import {
 } from '../../store/toggle-and-content-store'
 import { createFormDataWithImages } from '../../utility/createForm'
 import Api from '../../api'
+import { endPoints } from '../../utility/endPoints'
 import NutrientsPopUp from './nutrients-pop-up'
 
 function LoadingView() {
@@ -109,19 +110,14 @@ export default function CameraPage() {
       toggleModal(false)
       const result = await captureRef(cameraRef.current, snapshotOption)
       const data = createFormDataWithImages(result)
-      setTimeout(function () {
-        //code goes here
-        toggleModal(true)
-      }, 2000)
-      // Api.post('/food', data)
-      //   .then((response) => {
-      //     console.log(response.data)
-      //     setNutritionContent(response.data)
-      //     toggleModal(true)
-      //   })
-      //   .catch((e) => {
-      //     console.log(e)
-      //   })
+      const predict_image = await Api.post(endPoints.predict_image, data)
+      const resultFromImage = await predict_image.data
+      // const nutrientsFromQuery = await Api.post(endPoints.get_nutrients_from_query, resultFromImage)
+      // const resultFromQuery = await nutrientsFromQuery.data
+      console.log(resultFromImage)
+      // console.log(resultFromQuery)
+      // setNutritionContent(resultFromQuery)
+      await toggleModal(true)
     } catch (e) {
       console.log(e)
     }
@@ -137,9 +133,25 @@ export default function CameraPage() {
     if (image.cancelled) {
       return
     }
-    setImage(image.uri)
-    await sendFetch(image.uri)
-    // setEditorVisible(true)
+    try {
+      //1. fetch data with result as params
+      //2. set loading
+      //3. set store content with response data if success
+      //4. set loading false
+      //5. navigate to result page
+      toggleModal(false)
+      const data = createFormDataWithImages(image.uri)
+      const predict_image = await Api.post(endPoints.predict_image(), data)
+      const resultFromImage = await predict_image.data.image
+      const nutrientsFromQuery = await Api.post(endPoints.get_nutrients_from_query(), resultFromImage.join(" "))
+      const resultFromQuery = await nutrientsFromQuery.data
+      console.log(resultFromImage)
+      console.log(resultFromQuery)
+      setNutritionContent({image:resultFromImage,query:resultFromQuery})
+      await toggleModal(true)
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   const sendFetch = useCallback(

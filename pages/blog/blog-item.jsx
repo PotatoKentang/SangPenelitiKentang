@@ -1,15 +1,16 @@
-import { useCallback } from 'react'
+import { useCallback, useState, useEffect } from 'react'
 import { Avatar, Button, Card, Text } from 'react-native-paper'
-import { blogModal, toggleLoadingScreen } from '../../store/toggle-and-content-store'
+// import { View, Image } from 'react-native';
+import {
+  blogModal,
+  toggleLoadingScreen,
+} from '../../store/toggle-and-content-store'
+
 export default function BlogItem(props) {
   const { title, date, author, content, image, tags } = props.blog
-  //store
   const setModalVisible = blogModal((state) => state.setActive)
-  const setModalContent = blogModal(
-    (state) => state.setContent
-  )
+  const setModalContent = blogModal((state) => state.setContent)
   const setModalLoading = toggleLoadingScreen((state) => state.setLoading)
-
   const toggleModal = useCallback(
     (active) => {
       setModalVisible(true)
@@ -21,24 +22,44 @@ export default function BlogItem(props) {
     [setModalVisible, setModalLoading]
   )
 
-  const fetchData = () => {
-    // toggleModal(false)
-    // console.log('fetching data')
+  const readMore = () => {
     setModalContent(props.blog)
     toggleModal(true)
   }
-  //ganti card jadi style sesuka lu
+  console.log(image)
   return (
-    <Card style={{ marginVertical:3}}>
-      <Card.Title title={title}/>
-      <Card.Cover source={{ uri: 'https://picsum.photos/700' }} style={{height:200}}/>
+    <Card
+      style={{
+        marginVertical: 8,
+        marginHorizontal: 5,
+        width: 370,
+        backgroundColor: '#ffff',
+        elevation: 3,
+      }}
+    >
+      <Card.Title
+        title={title}
+        titleNumberOfLines={2}
+        titleStyle={{ fontWeight: 'bold', fontSize: 20 }}
+        style={{ width: '100%', marginBottom: 3 }}
+      />
+
+      <Card.Cover
+        source={{ uri: image }}
+        style={{ height: 200, marginHorizontal: 14, marginBottom: 20 }}
+      />
       <Card.Content>
-        {/* <Text variant="titleLarge">Card title</Text> */}
-        <Text variant="bodyMedium">{content}</Text>
+        <Text
+          variant="bodyMedium"
+          numberOfLines={5}
+          style={{ textAlign: 'justify', fontSize: 16 }}
+        >
+          {content}
+        </Text>
       </Card.Content>
       <Card.Actions>
         <Button style={{ display: 'none' }}>Cancel</Button>
-        <Button onPress={() => fetchData()}>
+        <Button buttonColor="#33cc8f" onPress={readMore}>
           Read More
         </Button>
       </Card.Actions>

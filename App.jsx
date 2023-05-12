@@ -7,7 +7,6 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { ThemeProvider } from 'styled-components/native'
 
 // pages
-import HomeScreen from './pages/home'
 import CameraScreen from './pages/camera'
 import CalculatorScreen from './pages/calculator'
 import BlogScreen from './pages/blog'
