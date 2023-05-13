@@ -38,7 +38,6 @@ const getNutritionInformation = (nutritionName, amount) => {
   }
 }
 
-
 export const formatResult = (results) => {
   const mergedObject = { foodNames: [], nutrients: [] }
   results.forEach((nutrition) => {
@@ -61,4 +60,27 @@ export const formatResult = (results) => {
   })
   mergedObject.foodNames = combineNames(mergedObject.foodNames)
   return mergedObject
+}
+
+export const formatQuery = (results) => {
+    const nutrients = []
+    results.forEach((nutrition) => {
+      Object.entries(nutrition).forEach(([keyName, amount]) => {
+        if (keyName === 'name') {
+
+        } else {
+          const nutrientInfo = getNutritionInformation(keyName, amount)
+          const existingNutrientIndex = nutrients.findIndex(
+            (nutrient) => nutrient.name === nutrientInfo.name
+          )
+          if (existingNutrientIndex === -1) {
+            nutrients.push(nutrientInfo)
+          } else {
+            nutrients[existingNutrientIndex].amount +=
+              nutrientInfo.amount
+          }
+        }
+      })
+    })
+    return nutrients
 }
