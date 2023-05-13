@@ -1,37 +1,38 @@
-import { useCallback, useState, useEffect } from 'react'
+import { useCallback, useState, useEffect} from 'react'
 import { Avatar, Button, Card, Text } from 'react-native-paper'
 // import { View, Image } from 'react-native';
-import {
-  blogModal,
-  toggleLoadingScreen,
-} from '../../store/toggle-and-content-store'
+import { blogModal, toggleLoadingScreen } from '../../store/toggle-and-content-store'
 
 export default function BlogItem(props) {
-  const { title, date, author, content, image, tags } = props.blog
-  const setModalVisible = blogModal((state) => state.setActive)
-  const setModalContent = blogModal((state) => state.setContent)
-  const setModalLoading = toggleLoadingScreen((state) => state.setLoading)
+  const { title, date, author, content, image, tags } = props.blog;
+  const setModalVisible = blogModal((state) => state.setActive);
+  const setModalContent = blogModal((state) => state.setContent);
+  const setModalLoading = toggleLoadingScreen((state) => state.setLoading);
+
   const toggleModal = useCallback(
     (active) => {
-      setModalVisible(true)
-      setModalLoading(true)
+      setModalVisible(true);
+      setModalLoading(true);
       if (active) {
-        setModalLoading(false)
+        setModalLoading(false);
       }
     },
     [setModalVisible, setModalLoading]
-  )
+  );
 
   const readMore = () => {
-    setModalContent(props.blog)
-    toggleModal(true)
-  }
-  console.log(image)
+    setModalContent(props.blog);
+    toggleModal(true);
+  };
+
+
   return (
     <Card
       style={{
         marginVertical: 8,
         marginHorizontal: 5,
+        paddingTop: 15,
+        paddingBottom: 8,
         width: 370,
         backgroundColor: '#ffff',
         elevation: 3,
@@ -49,12 +50,8 @@ export default function BlogItem(props) {
         style={{ height: 200, marginHorizontal: 14, marginBottom: 20 }}
       />
       <Card.Content>
-        <Text
-          variant="bodyMedium"
-          numberOfLines={5}
-          style={{ textAlign: 'justify', fontSize: 16 }}
-        >
-          {content}
+        <Text variant="bodyMedium" numberOfLines={5} style={{ textAlign: 'justify', fontSize:16 }}>
+          {content.substring(0,200)+"..."}
         </Text>
       </Card.Content>
       <Card.Actions>
@@ -64,5 +61,5 @@ export default function BlogItem(props) {
         </Button>
       </Card.Actions>
     </Card>
-  )
+  );
 }

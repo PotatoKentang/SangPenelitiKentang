@@ -18,7 +18,7 @@ export const cameraModal = create((set) => ({
   setActive: (active) => set((state) => ({
     isActive: active
   })),
-  content: '',
+  content: {},
   setContent: (content) =>
     set((state) => ({
       content: content,

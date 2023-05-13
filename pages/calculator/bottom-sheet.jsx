@@ -32,7 +32,7 @@ export default function BottomSheetSection() {
           {bottomSheetContent["nutrients"]&&bottomSheetContent["nutrients"].map((item,index)=>{
             return (<View key={index} style={{ display:'flex',flexDirection:'row',justifyContent:'space-between' }}>
               <Text>{item["name"]}</Text>
-              <Text>{item["amount"]} {item["unit"]}</Text>
+              <Text>{item["amount"].toFixed(2)} {item["unit"]}</Text>
             </View>)
           })}
         </ScrollView>

@@ -1,13 +1,15 @@
 import {
   View,
-  Text,
   useWindowDimensions,
   ScrollView,
   FlatList,
   TextInput,
   Button,
 } from 'react-native'
+import Text from '../../components/text'
 import { Modal, Portal, ActivityIndicator } from 'react-native-paper'
+import { Menu, Divider } from 'react-native-paper'
+
 import Icon_Back from '../../components/icons/icon-back'
 import styled from 'styled-components/native'
 import {
@@ -25,13 +27,13 @@ export default function NutrientsPopUp() {
   const setLoading = calculatorModal((state) => state.setLoading)
   const isLoading = calculatorModal((state) => state.isLoading)
   const nutritionContent = calculatorModal((state) => state.content)
-  const [totalAmount, setTotalAmount] = useState('')
-  const [totalServings, setTotalServings] = useState('')
+  const [totalAmount, setTotalAmount] = useState(0)
+  const [unit, setUnit] = useState('GRAMS')
   const setContent = BottomSheetStore((state) => state.setContent)
   const content = BottomSheetStore((state) => state.content)
-  const [totalNutrients, setTotalNutrients] = useState([
-    { name: 'test', amount: 1 },
-  ])
+  const [visible, setVisible] = useState(false)
+  const openMenu = () => setVisible(true)
+  const closeMenu = () => setVisible(false)
 
   const formatResult = (foodNames, results) => {
     const mergedObject = {
@@ -54,15 +56,15 @@ export default function NutrientsPopUp() {
   const addNutritionToList = useCallback(async () => {
     try {
       await setLoading(true)
-      //PERHATIIN INI
-      // const data = new FormData()
-      // data.append('amount', totalAmount)
-      // data.append('units', totalServings)
+      const data = new FormData()
+      data.append('amount', totalAmount)
+      data.append('unit', unit.toLowerCase())
       const ingredientsByID = await Api.post(
-        endPoints.list_of_ingredients_by_id(nutritionContent.id)
+        endPoints.list_of_ingredients_by_id(nutritionContent.id),data
       )
       const result = await ingredientsByID.data.nutrition.nutrients
       const formatedResult = await formatResult(nutritionContent.name, result)
+      console.log(formatedResult)
       await setContent(formatedResult)
       await setLoading(false)
     } catch (err) {
@@ -70,7 +72,7 @@ export default function NutrientsPopUp() {
       setLoading(false)
     }
     setModalVisible(false)
-  }, [totalAmount, totalServings, nutritionContent.id])
+  }, [totalAmount, unit, nutritionContent.id])
 
   if (isLoading) {
     return (
@@ -95,7 +97,6 @@ export default function NutrientsPopUp() {
         margin: 0,
         flex: 1,
         backgroundColor: 'white',
-        // width: screenWidth * 0.8,
         height: screenHeight * 0.5,
         alignSelf: 'center',
         alignContent: 'center',
@@ -112,19 +113,28 @@ export default function NutrientsPopUp() {
       }}
       onDismiss={() => setModalVisible(false)}
     >
-      <SubTitle>{nutritionContent.name}</SubTitle>
-      <Text>Amount:</Text>
-      <TextInput
-        style={{ marginVertical: 10, borderWidth: 1, padding: 5 }}
-        onChangeText={setTotalAmount}
-        placeholder="10"
-      />
-      <Text>Serving Portions:</Text>
-      <TextInput
-        style={{ marginVertical: 10, borderWidth: 1, padding: 5 }}
-        onChangeText={setTotalServings}
-        placeholder="5 (grams, onz, ml)"
-      />
+      <Text size={"24px"} family={'Jakarta-m'} mb={5}>{nutritionContent.name}</Text>
+      <Text size={"14px"} family={'Jakarta-m'} mb={5}>Amount:</Text>
+      <View style={{ display: 'flex', flexDirection: 'row',alignItems:'center',justifyContent:'space-between' }}>
+        <TextInput
+          style={{ marginVertical: 10, borderWidth: .7, padding: 5,width:150 }}
+          onChangeText={setTotalAmount}
+          placeholder="10"
+          maxLength={6}
+          keyboardType="numeric"
+        />
+        <Menu
+          visible={visible}
+          onDismiss={closeMenu}
+          anchor={<Button onPress={openMenu} title={unit}/>}
+          contentStyle={{ backgroundColor: 'white' }}
+        >
+          <Menu.Item onPress={() => setUnit('grams')&closeMenu()} title="grams" />
+          <Menu.Item onPress={() => setUnit('miligrams')&closeMenu()} title="miligrams" />
+          <Divider />
+          <Menu.Item onPress={() => setUnit('kilograms')&closeMenu()} title="kilograms" />
+        </Menu>
+      </View>
       <View
         style={{
           display: 'flex',
@@ -136,7 +146,6 @@ export default function NutrientsPopUp() {
         <View style={{ width: 5 }} />
         <Button title="Confirm" onPress={() => addNutritionToList()} />
       </View>
-      {/* </ScrollView> */}
     </Modal>
   )
 }

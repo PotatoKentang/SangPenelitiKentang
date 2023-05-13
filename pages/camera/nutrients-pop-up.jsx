@@ -14,36 +14,8 @@ export default function NutrientsPopUp() {
   )
   const isLoading = toggleLoadingScreen((state) => state.isLoading)
   const nutritionContent = cameraModal(
-    (state) => state.setContent
+    (state) => state.content
   )
-  // const result = [
-  //   {
-  //     name: 'Energy',
-  //     value: '100',
-  //   },
-  //   {
-  //     name: 'Protein',
-  //     value: '100',
-  //   },
-  //   {
-  //     name: 'Fat',
-  //     value: '100',
-  //   },
-  // ]
-  // const nutrients = [
-  //   {
-  //     name: 'Energy',
-  //     value: '100',
-  //   },
-  //   {
-  //     name: 'Protein',
-  //     value: '100',
-  //   },
-  //   {
-  //     name: 'Fat',
-  //     value: '100',
-  //   },
-  // ]
 
   if (isLoading) {
     return (
@@ -82,13 +54,13 @@ export default function NutrientsPopUp() {
           {nutritionContent["image"] && nutritionContent["image"].map((item, index) => {
             return (
               <ListContainer key={index}>
-                <Text>{item}</Text>
+                <SubTitle> - {item}</SubTitle>
               </ListContainer>
             )
           })}
           {!nutritionContent["image"]&& <SubTitle>No food found</SubTitle>}
           <SubTitle>Nutrients</SubTitle>
-          {nutritionContent["query"] && nutritionContent["query"].map((item, index) => {
+          {nutritionContent["query"] && Object.entries(nutritionContent["query"]).map((item, index) => {
             return (
               <ListContainer key={index}>
                 <Text>{Object.keys(item)}</Text>

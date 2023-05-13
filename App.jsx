@@ -49,7 +49,7 @@ export default function App({ navigation, route }) {
     return null
   }
   return (
-    <GestureHandlerRootView style={{ flex: 1}}>
+    <GestureHandlerRootView style={{ flex: 1, fontFamily: 'Jakarta-m'}}>
       <NavigationContainer onLayout={onLayoutRootView}>
         <Provider>
           <ThemeProvider theme={theme}>

@@ -25,11 +25,11 @@ import {
   cameraModal,
   toggleLoadingScreen,
 } from '../../store/toggle-and-content-store'
-import { createFormDataWithImages } from '../../utility/createForm'
+import { createFormDataWithImages, createFormDataWithText } from '../../utility/createForm'
 import Api from '../../api'
 import { endPoints } from '../../utility/endPoints'
 import NutrientsPopUp from './nutrients-pop-up'
-
+import {formatResult} from '../../utility/formatResult'
 function LoadingView() {
   return (
     <View>
@@ -41,14 +41,13 @@ function LoadingView() {
 export default function CameraPage() {
   //expo camera
   const [image, setImage] = useState(null)
+  const [loading,setLoading] = useState(false)
   const [type, setType] = useState(null)
   const [cameraPermission, setCameraPermission] = useState(null)
   const [mediaPermission, setMediaPermission] = useState(null)
   const [ratio, setRatio] = useState(null)
   const [flashMode, setFlashMode] = useState(null)
   const cameraRef = useRef(null)
-  const [editorVisible, setEditorVisible] = useState(false)
-  const [loading, setLoading] = useState(false)
   const { height: screenHeight, width: screenWidth } = useWindowDimensions()
   const isFocused = useIsFocused()
 
@@ -107,23 +106,24 @@ export default function CameraPage() {
       //3. set store content with response data if success
       //4. set loading false
       //5. navigate to result page
-      toggleModal(false)
-      const result = await captureRef(cameraRef.current, snapshotOption)
-      const data = createFormDataWithImages(result)
-      const predict_image = await Api.post(endPoints.predict_image, data)
-      const resultFromImage = await predict_image.data
-      // const nutrientsFromQuery = await Api.post(endPoints.get_nutrients_from_query, resultFromImage)
-      // const resultFromQuery = await nutrientsFromQuery.data
-      console.log(resultFromImage)
-      // console.log(resultFromQuery)
-      // setNutritionContent(resultFromQuery)
+      await toggleModal(false)
+      const image = await captureRef(cameraRef.current, snapshotOption)
+      const imageData = await createFormDataWithImages(image.uri)
+      const predict_image = await Api.post(endPoints.predict_image(), imageData)
+      const resultFromImage = await formatResult(predict_image.data.image)
+      const queryData = await createFormDataWithText(resultFromImage.join(" "))
+      const nutrientsFromQuery = await Api.post(endPoints.get_nutrients_from_query(), queryData)
+      const resultFromQuery = await nutrientsFromQuery.data
+      await setNutritionContent({"image":resultFromImage,"query":resultFromQuery})
       await toggleModal(true)
     } catch (e) {
       console.log(e)
+      await setModalVisible(false)
+      await setModalLoading(false)
     }
   }, [image])
 
-  const openMedia = async () => {
+  const openMedia = useCallback(async () => {
     const image = await ImagePicker.launchImageLibraryAsync(
       ImagePickerOption
     ).catch((e) => {
@@ -139,45 +139,20 @@ export default function CameraPage() {
       //3. set store content with response data if success
       //4. set loading false
       //5. navigate to result page
-      toggleModal(false)
-      const data = createFormDataWithImages(image.uri)
-      const predict_image = await Api.post(endPoints.predict_image(), data)
-      const resultFromImage = await predict_image.data.image
-      const nutrientsFromQuery = await Api.post(endPoints.get_nutrients_from_query(), resultFromImage.join(" "))
+      await toggleModal(false)
+      const imageData = await createFormDataWithImages(image.uri)
+      const predict_image = await Api.post(endPoints.predict_image(), imageData)
+      const resultFromImage = await formatResult(predict_image.data.image)
+      const queryData = await createFormDataWithText(resultFromImage.join(" "))
+      const nutrientsFromQuery = await Api.post(endPoints.get_nutrients_from_query(), queryData)
       const resultFromQuery = await nutrientsFromQuery.data
-      console.log(resultFromImage)
-      console.log(resultFromQuery)
-      setNutritionContent({image:resultFromImage,query:resultFromQuery})
+      await setNutritionContent({"image":resultFromImage,"query":resultFromQuery})
       await toggleModal(true)
     } catch (e) {
       console.log(e)
     }
-  }
+  },[image])
 
-  const sendFetch = useCallback(
-    async (imgURI) => {
-      try {
-        //1. fetch data with result as params
-        //2. set loading
-        //3. set store content with response data if success
-        //4. set loading false
-        //5. navigate to result page
-        toggleModal(false)
-        const data = createFormDataWithImages(imgURI)
-        Api.post('/food', data)
-          .then((response) => {
-            setNutritionContent('result')
-            toggleModal(true)
-          })
-          .catch((e) => {
-            console.log(e)
-          })
-      } catch (e) {
-        console.log(e)
-      }
-    },
-    [image]
-  )
 
   useEffect(() => {
     ;(async function () {

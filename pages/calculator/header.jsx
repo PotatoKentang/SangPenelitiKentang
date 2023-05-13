@@ -1,28 +1,24 @@
 import styled from 'styled-components/native'
-import Icon_Back from '../../components/icons/icon-back'
-import Icon_Settings from '../../components/icons/icon-settings'
-import Icon_Sound from '../../components/icons/icon-sound'
-
+//icons
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import Text from '../../components/text'
 export default function Header() {
   return (
     <HeaderView>
-      <HorizontalAlign>
-        <Icon_Back text="Back" ml={7} />
-      </HorizontalAlign>
-      <HorizontalAlign style={{ flexDirection: 'row' }}>
-        <Icon_Sound ml={7} />
-        <Margin px={25} />
-        <Icon_Settings ml={7} />
-      </HorizontalAlign>
+      <MaterialCommunityIcons name="calculator" size={50} color={'#32CC8F'}/>
+      <Margin px={5} />
+      <Text size={"25px"} family={'Jakarta-b'} color={'#32CC8F'}>
+        Calculate What You Need
+      </Text>
     </HeaderView>
   )
 }
 
 const HeaderView = styled.View`
   flex-direction: row;
+  flex-wrap:wrap;
   margin: 10px 10px 2px 10px;
-  justify-content: space-between;
-  // background-color: green;
+  align-items:center;
 `
 
 const HorizontalAlign = styled.View`

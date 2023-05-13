@@ -1,27 +1,25 @@
 import styled from 'styled-components/native'
-import Icon_Back from '../../components/icons/icon-back'
-import Icon_Settings from '../../components/icons/icon-settings'
-import Icon_Sound from '../../components/icons/icon-sound'
+import Text from '../../components/text'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 export default function Header() {
   return (
     <HeaderView>
-      <HorizontalAlign>
-        <Icon_Back text="Back" ml={7} />
-      </HorizontalAlign>
-      <HorizontalAlign style={{ flexDirection: 'row' }}>
-        <Icon_Sound ml={7} />
-        <Margin px={25} />
-        <Icon_Settings ml={7} />
-      </HorizontalAlign>
+      {/* <Icon_Back text="Back" ml={7} /> */}
+      <MaterialCommunityIcons name="post-outline" size={50} color={'#32CC8F'}/>
+      <Margin px={5} />
+      <Text size={"25px"} family={'Jakarta-b'} color={'#32CC8F'}>
+        Explore What You Want To Know
+      </Text>
     </HeaderView>
   )
 }
 
 const HeaderView = styled.View`
   flex-direction: row;
+  flex-wrap:wrap;
   margin: 10px 10px 10px 10px;
-  justify-content: space-between; ;
+  align-items:center;
 `
 
 const HorizontalAlign = styled.View`

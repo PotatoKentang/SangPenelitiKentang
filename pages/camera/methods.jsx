@@ -3,8 +3,8 @@ export const getOptimalRatio = (ratios) => {
   return ratio
 }
 
-
 export const toggleCameraType = () =>
   setType((current) =>
     current === CameraType.back ? CameraType.front : CameraType.back
   )
+
