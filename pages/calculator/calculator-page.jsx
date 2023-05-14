@@ -12,7 +12,7 @@ export default function CalculatorPage() {
   const handleTabPress = (index) => {
     console.log(index)
     resetBottomSheet({
-      name: [],
+      foodName: [],
       nutrients: [],
     })
   }

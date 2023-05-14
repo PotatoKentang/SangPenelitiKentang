@@ -20,27 +20,30 @@ export default function BottomSheetSection() {
         ref={sheetRef}
         snapPoints={snapPoints}
         initialSnapIndex={0}
+        activeOffsetY={[-2, 2]}
+        failOffsetX={[-2, 2]}
       >
         <ScrollView contentContainerStyle={{
-          flex: 1,
           backgroundColor: 'white',
-          padding:20
+          padding:20,
+          paddingBottom:50,
+          flexGrow: 1
         }}>
           <SubTitle>List Of Food</SubTitle>
           {bottomSheetContent["foodNames"]&&bottomSheetContent["foodNames"].map((item,index)=>{
             return (<SubTitle key={index}> - {item}</SubTitle>)
           })}
-          {!bottomSheetContent["foodNames"]&&<SubTitle> - No food found</SubTitle>}
+          <View style={{ marginVertical:10 }}></View>
           <SubTitle>Nutrients</SubTitle>
           {bottomSheetContent["nutrients"]&&bottomSheetContent["nutrients"].map((item,index)=>{
             return (<View key={index} style={{ display:'flex',flexDirection:'row',justifyContent:'space-between' }}>
               <SubTitle> - {item["name"]}</SubTitle>
-              <SubTitle> - {item["amount"].toFixed(2)} {item["unit"]}</SubTitle>
+              <SubTitle>{item["amount"].toFixed(2)} {item["unit"]}</SubTitle>
             </View>)
           })}
-          {!bottomSheetContent["nutrients"]&&<SubTitle> -  No nutrients found</SubTitle>}
+          <View style={{ marginVertical:10 }}></View>
+          <Button title="Reset Nutrition" onPress={()=>bottomSheetSetContent({foodNames:[],nutrients:[]})}/>
         </ScrollView>
-        <Button title="Reset Nutrition" style={{marginVertical:10}} onPress={()=>bottomSheetSetContent({foodNames:[],nutrients:[]})}/>
       </BottomSheet>
   )
 }

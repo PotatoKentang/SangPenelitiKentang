@@ -4,10 +4,26 @@ Welcome to Peneliti Kentang's mobile application repository built with React Nat
 
 For the backend, please refer to the [YOLO](https://github.com/PotatoKentang/YouOnlyLickOnce) repository
 
+## 🤝 Introducing Our Members
+- Patrick Kwon
+- Retno Shintya Hariyani
+- Marvelio Keven Wen
+
+## 🌟 Application Purpose
+The purpose of our mobile app is to prevent malnutrition by providing necessary information about nutrition. Our app has three main features:
+
+- **Camera:** The camera feature can detect food and provide information about the food.
+- **Nutrition Calculator:** The nutrition calculator can be used through the UI or text-based, and it calculates the total nutrition of the foods/ingredients.
+- **Blog Section:** The blog section provides blogs about malnutrition.
+
+
+## 🔗 Product (mind you that the product periodically changes as the backend is not deployed, please refer to the [YOLO](https://github.com/) for the backend)
+- [Nutrisense](https://)
+
 ## 📊 Requirements
 
 - Node & NPM
-- Expo Go Android/iOS Application (Alternatively, you can use an Android/iOS emulator)
+- Expo Go Android/iOS Application
 
 ## 🛠 Setup
 
@@ -39,6 +55,3 @@ expo start --android
 5. Once the app finishes processing the image or process the calculator query, you can now see summerized nutrients contained in the foods.
 6. Additionally, you can also read blog to understand more about the malnutritions problem.
 7. And that is it! You can now use the application help you decrease the possibility of malnutritions on your day to day consumptions especially for childrens.
-
-> Finished Product
-https://expo.dev/accounts/neurologia/projects/Nutrisense/builds/0562f266-c789-42e2-92d5-4fe131ed7e06

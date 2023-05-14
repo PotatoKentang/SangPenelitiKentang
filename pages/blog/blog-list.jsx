@@ -11,7 +11,8 @@ export default function BlogListScreen() {
   const onChangeSearch = (query) => setSearchQuery(query)
   useEffect(()=>setBlogs(BlogList()),[])
   const filterBlogs = useCallback(() => {
-    const result = blogs.filter((blog) =>
+    const blogList = BlogList()
+    const result = blogList.filter((blog) =>
       blog.title.toLowerCase().includes(searchQuery.toLowerCase())
     )
     setBlogs(result)
