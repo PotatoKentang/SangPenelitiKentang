@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import TextBasedCalculatorPage from './text-based-calculator'
 import UIBasedCalculator from './ui-based-calculator'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { View } from 'react-native'
 import Header from './header'
 import BottomSheet from './bottom-sheet'
 import { BottomSheetStore } from '../../store/toggle-and-content-store'
@@ -20,7 +20,12 @@ export default function CalculatorPage() {
 
   return (
     <>
-      <Tab.Navigator initialRouteName="UI based">
+      <Tab.Navigator
+        initialRouteName="UI based"
+        screenOptions={{
+          tabBarIndicatorStyle: { backgroundColor: '#33cc8f' },
+        }}
+      >
         <Tab.Screen
           name="UI based"
           component={UIBasedCalculator}

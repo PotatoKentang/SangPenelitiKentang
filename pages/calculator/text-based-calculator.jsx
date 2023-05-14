@@ -1,11 +1,12 @@
-import { View, TextInput, Button } from 'react-native'
+import { View, TextInput } from 'react-native'
+import { Button } from 'react-native-paper'
 import { Text } from 'react-native-paper'
-import { useState,useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import Api from '../../api'
 import { createFormDataWithText } from '../../utility/createForm'
 import { BottomSheetStore } from '../../store/toggle-and-content-store'
 import { endPoints } from '../../utility/endPoints'
-import {formatResult} from '../../utility/formatResult'
+import { formatResult } from '../../utility/formatResult'
 export default function TextBasedCalculatorPage() {
   const [text, onChangeText] = useState('')
   const toggleSheet = BottomSheetStore((state) => state.isActive)
@@ -27,7 +28,7 @@ export default function TextBasedCalculatorPage() {
     }
   }
   return (
-    <View style={{ margin: 10 }}>
+    <View style={{ padding: 10,flex:1,backgroundColor:'white' }}>
       <Text variant="titleSmall">Textbased Nutrition Calculator</Text>
       <TextInput
         multiline={true}
@@ -44,7 +45,13 @@ export default function TextBasedCalculatorPage() {
         onChangeText={onChangeText}
         placeholder="Apple 1kg"
       />
-      <Button title="Calculate" onPress={() => get_nutrients()} />
+      <Button
+        buttonColor="#33cc8f"
+        textColor="white"
+        onPress={() => get_nutrients()}
+      >
+        Calculate
+      </Button>
     </View>
   )
 }

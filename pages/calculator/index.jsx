@@ -5,7 +5,7 @@ export default function CalculatorScreen() {
   const Stack = createStackNavigator()
   return (
     <>
-      <Stack.Navigator >
+      <Stack.Navigator model="card" cardStyle={{ backgroundColor: 'white' }}>
         <Stack.Screen name="Nutrition Calculator" component={CalculatorPage} />
       </Stack.Navigator >
     </>

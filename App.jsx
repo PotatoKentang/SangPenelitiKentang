@@ -50,20 +50,21 @@ export default function App({ navigation, route }) {
   }
   return (
     <GestureHandlerRootView style={{ flex: 1, fontFamily: 'Jakarta-m'}}>
-      <NavigationContainer onLayout={onLayoutRootView}>
+      <NavigationContainer onLayout={onLayoutRootView} style={{ backgroundColor:'white' }}>
         <Provider>
           <ThemeProvider theme={theme}>
             <Tab.Navigator
               initialRouteName={routesName.camera}
               backBehavior="order"
               tabBarPosition="bottom"
-              screenOptions={() => ({
-                headerShown: true,
-                tabBarActiveTintColor: 'tomato',
-                tabBarInactiveTintColor: 'gray',
-                tabBarShowIcon: true,
-                tabBarAllowFontScaling: true,
-              })}
+              activeColor="#32CC8F"
+              inactiveColor='grey'
+              activeBackground="#fff"
+              shifting={true}
+              labeled={true}
+              screenOptions={{
+                tabBarColor: '#fff',
+              }}
             >
               <Tab.Screen
                 name={routesName.home}

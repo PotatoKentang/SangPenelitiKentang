@@ -19,7 +19,7 @@ export default function BlogListScreen() {
   }, [blogs])
 
   return (
-    <View>
+    <View style={{ flex:1,backgroundColor:'white' }}>
       <Searchbar
         placeholder="Search"
         onChangeText={onChangeSearch}
@@ -31,6 +31,7 @@ export default function BlogListScreen() {
       <ScrollView style={BlogContainer} contentContainerStyle={WrapBlogItem}>
         {blogs.map((blog, index) => (
           <BlogItem key={index} blog={blog} />
+
         ))}
       </ScrollView>
     </View>

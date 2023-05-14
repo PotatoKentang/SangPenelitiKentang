@@ -1,6 +1,6 @@
 import { View, FlatList, Image, TouchableOpacity } from 'react-native'
-import { Portal, Searchbar, Text } from 'react-native-paper'
-import { useCallback, useState,useEffect } from 'react'
+import { Portal, Searchbar, Text, Divider } from 'react-native-paper'
+import { useCallback, useState, useEffect } from 'react'
 import NutrientsPopUp from './nutrients-pop-up'
 import Api from '../../api'
 import { createFormDataWithText } from '../../utility/createForm'
@@ -67,29 +67,33 @@ export default function UIBasedCalculator() {
     },
     [setModalVisible, setModalLoading]
   )
-  const get_ingredients_list = useCallback(async() => {
-    try{
+  const get_ingredients_list = useCallback(async () => {
+    try {
       const data = await createFormDataWithText(searchQuery)
       const response = await Api.post(endPoints.list_of_ingredients(), data)
       await setIngredients(response.data.results)
-    }
-    catch(err){
+    } catch (err) {
       console.log(err)
     }
   }, [searchQuery])
   return (
-    <View style={{ margin: 10 }}>
+    <View style={{ padding: 10, flex: 1, backgroundColor: 'white' }}>
       {isModalVisible && (
         <Portal>
           <NutrientsPopUp />
         </Portal>
       )}
-      <Text variant="titleSmall">UI based Nutrition Calculator</Text> 
+      <Text variant="titleSmall">UI based Nutrition Calculator</Text>
       <Searchbar
         placeholder="Search"
         onChangeText={onChangeSearch}
         value={searchQuery}
-        style={{ marginVertical: 10 }}
+        style={{
+          marginVertical: 10,
+          backgroundColor: 'white',
+          borderColor: '#33cc8f',
+          borderWidth: 1,
+        }}
         onIconPress={() => console.log(searchQuery)}
         onSubmitEditing={() => get_ingredients_list()}
       />
@@ -99,27 +103,30 @@ export default function UIBasedCalculator() {
           keyExtractor={(item) => item.id.toString()}
           contentContainerStyle={{ paddingBottom: 100 }}
           renderItem={({ item: ingredient }) => (
-            <TouchableOpacity
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginVertical: 20,
-              }}
-              onPress={() => {
-                setCalculatorContent(ingredient) & toggleModal(true)
-              }}
-            >
-              <Image
-                source={{
-                  uri:
-                    'https://spoonacular.com/cdn/ingredients_100x100/' +
-                    ingredient.image,
+            <View>
+              <TouchableOpacity
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginVertical: 20,
                 }}
-                style={{ width: 75, height: 75, borderRadius: 50 }}
-              />
-              <View style={{ width: 30 }}></View>
-              <Text>{ingredient.name}</Text>
-            </TouchableOpacity>
+                onPress={() => {
+                  setCalculatorContent(ingredient) & toggleModal(true)
+                }}
+              >
+                <Image
+                  source={{
+                    uri:
+                      'https://spoonacular.com/cdn/ingredients_100x100/' +
+                      ingredient.image,
+                  }}
+                  style={{ width: 75, height: 75, borderRadius: 50 }}
+                />
+                <View style={{ width: 30 }}></View>
+                <Text>{ingredient.name}</Text>
+              </TouchableOpacity>
+              <Divider />
+            </View>
           )}
         />
       )}
