@@ -60,19 +60,19 @@ export default function NutrientsPopUp() {
         <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 10 }}>
           <View style={{ marginVertical:5 }}></View>
           <SubTitle>List Of Foods</SubTitle>
-          {nutritionContent['image'] &&
-            nutritionContent['image'].map((item, index) => {
+          {nutritionContent['foodNames'] &&
+            nutritionContent['foodNames'].map((item, index) => {
               return (
                 <ListContainer key={index}>
                   <SubTitle> - {item}</SubTitle>
                 </ListContainer>
               )
             })}
-          {!nutritionContent['image'] && <SubTitle>No food found</SubTitle>}
+          {!nutritionContent['foodNames'] && <SubTitle>No food found</SubTitle>}
           <View style={{ marginVertical:5 }}></View>
           <SubTitle>Nutrients</SubTitle>
-          {nutritionContent['query'] &&
-            nutritionContent['query'].map((item, index) => {
+          {nutritionContent['nutrients'] &&
+            nutritionContent['nutrients'].map((item, index) => {
               return (
                 <View
                   key={index}
@@ -89,7 +89,7 @@ export default function NutrientsPopUp() {
                 </View>
               )
             })}
-          {!nutritionContent['query'] && (
+          {!nutritionContent['nutrients'] && (
             <SubTitle>No nutrients found</SubTitle>
           )}
         </ScrollView>

@@ -58,6 +58,7 @@ export default function App({ navigation, route }) {
               backBehavior="order"
               tabBarPosition="bottom"
               screenOptions={() => ({
+                headerShown: true,
                 tabBarActiveTintColor: 'tomato',
                 tabBarInactiveTintColor: 'gray',
                 tabBarShowIcon: true,
@@ -83,7 +84,6 @@ export default function App({ navigation, route }) {
                 name={routesName.calculator}
                 component={CalculatorScreen}
                 options={{
-                  headerShown: false,
                   tabBarLabel: routesName.calculator,
                   tabBarIcon: ({ color }) => (
                     <MaterialCommunityIcons

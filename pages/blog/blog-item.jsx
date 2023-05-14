@@ -2,27 +2,15 @@ import { useCallback, useState, useEffect} from 'react'
 import { Avatar, Button, Card, Text } from 'react-native-paper'
 // import { View, Image } from 'react-native';
 import { blogModal, toggleLoadingScreen } from '../../store/toggle-and-content-store'
-
+import { useNavigation } from '@react-navigation/native';
 export default function BlogItem(props) {
   const { title, date, author, content, image, tags } = props.blog;
-  const setModalVisible = blogModal((state) => state.setActive);
   const setModalContent = blogModal((state) => state.setContent);
-  const setModalLoading = toggleLoadingScreen((state) => state.setLoading);
-
-  const toggleModal = useCallback(
-    (active) => {
-      setModalVisible(true);
-      setModalLoading(true);
-      if (active) {
-        setModalLoading(false);
-      }
-    },
-    [setModalVisible, setModalLoading]
-  );
+  const navigation = useNavigation();
 
   const readMore = () => {
     setModalContent(props.blog);
-    toggleModal(true);
+    navigation.navigate('Blog Page');
   };
 
 

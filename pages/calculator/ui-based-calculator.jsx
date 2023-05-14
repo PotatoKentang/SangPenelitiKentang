@@ -84,7 +84,7 @@ export default function UIBasedCalculator() {
           <NutrientsPopUp />
         </Portal>
       )}
-      <Text variant="titleSmall">UI Nutrition Calculator</Text>
+      <Text variant="titleSmall">UI based Nutrition Calculator</Text> 
       <Searchbar
         placeholder="Search"
         onChangeText={onChangeSearch}

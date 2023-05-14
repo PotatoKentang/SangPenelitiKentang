@@ -7,7 +7,7 @@ import { BottomSheetStore } from '../../store/toggle-and-content-store'
 import { endPoints } from '../../utility/endPoints'
 import {formatResult} from '../../utility/formatResult'
 export default function TextBasedCalculatorPage() {
-  const [text, onChangeText] = useState('Apple 1gr\nBanana 10gram')
+  const [text, onChangeText] = useState('')
   const toggleSheet = BottomSheetStore((state) => state.isActive)
   const setContent = BottomSheetStore((state) => state.setContent)
   const get_nutrients = async () => {
@@ -42,6 +42,7 @@ export default function TextBasedCalculatorPage() {
           padding: 5,
         }}
         onChangeText={onChangeText}
+        placeholder="Apple 1kg"
       />
       <Button title="Calculate" onPress={() => get_nutrients()} />
     </View>

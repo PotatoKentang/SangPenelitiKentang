@@ -1,12 +1,14 @@
 import BottomSheet from '@gorhom/bottom-sheet'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
-import { StyleSheet, Text, View,ScrollView } from 'react-native'
+import { StyleSheet, Text, View,ScrollView,Button } from 'react-native'
 import { BottomSheetStore } from '../../store/toggle-and-content-store'
+import styled from 'styled-components/native'
 export default function BottomSheetSection() {
   const snapPoints = useMemo(() => ['5%','30%', '50%', '100%'], [])
   const sheetRef = useRef(null)
   const bottomSheetIsActive = BottomSheetStore((state) => state.isActive)
   const bottomSheetContent = BottomSheetStore((state) => state.content)
+  const bottomSheetSetContent = BottomSheetStore((state) => state.setContent)
 
 
   if (!bottomSheetIsActive) {
@@ -24,37 +26,28 @@ export default function BottomSheetSection() {
           backgroundColor: 'white',
           padding:20
         }}>
-          <Text>List Of Food</Text>
+          <SubTitle>List Of Food</SubTitle>
           {bottomSheetContent["foodNames"]&&bottomSheetContent["foodNames"].map((item,index)=>{
-            return (<Text key={index}>{item}</Text>)
+            return (<SubTitle key={index}> - {item}</SubTitle>)
           })}
-          <Text>Nutrients</Text>
+          {!bottomSheetContent["foodNames"]&&<SubTitle> - No food found</SubTitle>}
+          <SubTitle>Nutrients</SubTitle>
           {bottomSheetContent["nutrients"]&&bottomSheetContent["nutrients"].map((item,index)=>{
             return (<View key={index} style={{ display:'flex',flexDirection:'row',justifyContent:'space-between' }}>
-              <Text>{item["name"]}</Text>
-              <Text>{item["amount"].toFixed(2)} {item["unit"]}</Text>
+              <SubTitle> - {item["name"]}</SubTitle>
+              <SubTitle> - {item["amount"].toFixed(2)} {item["unit"]}</SubTitle>
             </View>)
           })}
+          {!bottomSheetContent["nutrients"]&&<SubTitle> -  No nutrients found</SubTitle>}
         </ScrollView>
+        <Button title="Reset Nutrition" style={{marginVertical:10}} onPress={()=>bottomSheetSetContent({foodNames:[],nutrients:[]})}/>
       </BottomSheet>
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 200,
-  },
-  contentContainer: {
-    backgroundColor: 'white',
-  },
-  sectionHeaderContainer: {
-    backgroundColor: 'white',
-    padding: 6,
-  },
-  itemContainer: {
-    padding: 6,
-    margin: 6,
-    backgroundColor: '#eee',
-  },
-})
+const SubTitle = styled.Text`
+  font-size: 16px;
+  font-weight: 500;
+  color: #000;
+  margin-horizontal: 10px;
+`

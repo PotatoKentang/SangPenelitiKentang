@@ -7,7 +7,7 @@ export default function Header() {
     <HeaderView>
       <MaterialCommunityIcons name="calculator" size={50} color={'#32CC8F'}/>
       <Margin px={5} />
-      <Text size={"25px"} family={'Jakarta-b'} color={'#32CC8F'}>
+      <Text size={"18px"} family={'Jakarta-b'} color={'#32CC8F'}>
         Calculate What You Need
       </Text>
     </HeaderView>

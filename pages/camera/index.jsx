@@ -29,7 +29,7 @@ import { createFormDataWithImages, createFormDataWithText } from '../../utility/
 import Api from '../../api'
 import { endPoints } from '../../utility/endPoints'
 import NutrientsPopUp from './nutrients-pop-up'
-import {formatQuery} from '../../utility/formatResult'
+import {formatQuery, formatResult} from '../../utility/formatResult'
 function LoadingView() {
   return (
     <View>
@@ -102,70 +102,22 @@ export default function CameraPage() {
   const fetchNutrition = useCallback(async(image) =>{
     const imageData = await createFormDataWithImages(image)
     const predict_image = await Api.post(endPoints.predict_image(), imageData)
-    const resultFromImage = await predict_image.data.image
-    console.log(resultFromImage)
-    const queryData = await createFormDataWithText(resultFromImage.join(" "))
-    const nutrientsFromQuery = await Api.post(endPoints.get_nutrients_from_query(), queryData)
-    const resultFromQuery = await formatQuery([
-      {
-          "calories": 222.6,
-          "carbohydrates_total_g": 0.0,
-          "cholesterol_mg": 92,
-          "fat_saturated_g": 3.7,
-          "fat_total_g": 12.9,
-          "fiber_g": 0.0,
-          "name": "chicken",
-          "potassium_mg": 179,
-          "protein_g": 23.7,
-          "serving_size_g": 100.0,
-          "sodium_mg": 72,
-          "sugar_g": 0.0
-      },
-      {
-          "calories": 222.6,
-          "carbohydrates_total_g": 0.0,
-          "cholesterol_mg": 92,
-          "fat_saturated_g": 3.7,
-          "fat_total_g": 12.9,
-          "fiber_g": 0.0,
-          "name": "chicken",
-          "potassium_mg": 179,
-          "protein_g": 23.7,
-          "serving_size_g": 100.0,
-          "sodium_mg": 72,
-          "sugar_g": 0.0
-      },
-      {
-          "calories": 222.6,
-          "carbohydrates_total_g": 0.0,
-          "cholesterol_mg": 92,
-          "fat_saturated_g": 3.7,
-          "fat_total_g": 12.9,
-          "fiber_g": 0.0,
-          "name": "chicken",
-          "potassium_mg": 179,
-          "protein_g": 23.7,
-          "serving_size_g": 100.0,
-          "sodium_mg": 72,
-          "sugar_g": 0.0
-      },
-      {
-          "calories": 291.9,
-          "carbohydrates_total_g": 0.0,
-          "cholesterol_mg": 87,
-          "fat_saturated_g": 7.8,
-          "fat_total_g": 19.7,
-          "fiber_g": 0.0,
-          "name": "beef",
-          "potassium_mg": 206,
-          "protein_g": 26.6,
-          "serving_size_g": 100.0,
-          "sodium_mg": 63,
-          "sugar_g": 0.0
-      }
-  ])
-    await setNutritionContent({"image":resultFromImage,"query":resultFromQuery})
 
+
+
+    //demo settings change this later
+    let resultFromImage = await predict_image.data.image
+    console.log(resultFromImage)
+    resultFromImage = resultFromImage.map(eggs => eggs.replace(/18Friedegg/g,"eggs"))
+
+    if(resultFromImage.length > 0) {
+      const queryData = await createFormDataWithText(resultFromImage.join(" "))
+      const nutrientsFromQuery = await Api.post(endPoints.get_nutrients_from_query(), queryData)
+      console.log(nutrientsFromQuery.data.items)
+      const resultFromQuery = await formatResult(nutrientsFromQuery.data.items)
+      console.log(resultFromQuery)
+      await setNutritionContent(resultFromQuery)
+    }
   },[image])
   //take image from screenshoot
   const takePicture = useCallback(async () => {
