@@ -8,6 +8,8 @@ For the backend, please refer to the [YOLO](https://github.com/PotatoKentang/You
 - Patrick Kwon
 - Retno Shintya Hariyani
 - Marvelio Keven Wen
+- Reynard Christiansen
+- Jefferson Juan
 
 ## 🌟 Application Purpose
 The purpose of our mobile app is to prevent malnutrition by providing necessary information about nutrition. Our app has three main features:
@@ -18,7 +20,8 @@ The purpose of our mobile app is to prevent malnutrition by providing necessary 
 
 
 ## 🔗 Product (mind you that the product periodically changes as the backend is not deployed, please refer to the [YOLO](https://github.com/) for the backend)
-- [Nutrisense](https://)
+- [Nutrisense](https://expo.dev/accounts/neurologia/projects/Nutrisense/builds/085e6ed7-24e1-4787-add3-1c55392d73f)
+- [Video Demo](https://drive.google.com/file/d/1M1fsAdHqZXFXFi9Z76hH7TPALk4mBobM/view)
 
 ## 📊 Requirements
 
