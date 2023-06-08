@@ -24,7 +24,13 @@ export default function BlogListScreen() {
         placeholder="Search"
         onChangeText={onChangeSearch}
         value={searchQuery}
-        style={{ marginHorizontal:10, marginTop: 20, marginBottom: 20 }}
+        style={{
+          marginHorizontal:10,
+          marginTop: 20,
+          marginBottom: 20,
+          backgroundColor: 'white',
+          borderColor: '#33cc8f',
+          borderWidth: 1, }}
         onSubmitEditing={() => filterBlogs()}
       />
 

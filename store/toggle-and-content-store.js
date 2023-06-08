@@ -8,7 +8,7 @@ export const BottomSheetStore = create((set) => ({
   setActive: (active) => set((state) => ({
     isActive: active
   })),
-  setContent: (content) => set((state) => ({
+  setContent: (content) => set((state) => ({  
     content: content
   })),
 }))

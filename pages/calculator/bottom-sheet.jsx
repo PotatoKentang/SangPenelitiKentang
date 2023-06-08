@@ -1,4 +1,4 @@
-import BottomSheet from '@gorhom/bottom-sheet'
+import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import { Button } from 'react-native-paper'
@@ -23,7 +23,7 @@ export default function BottomSheetSection() {
       activeOffsetY={[-2, 2]}
       failOffsetX={[-2, 2]}
     >
-      <ScrollView
+      <BottomSheetScrollView
         contentContainerStyle={{
           backgroundColor: 'white',
           padding: 20,
@@ -34,7 +34,7 @@ export default function BottomSheetSection() {
         <SubTitle>List Of Food</SubTitle>
         {bottomSheetContent['foodNames'] &&
           bottomSheetContent['foodNames'].map((item, index) => {
-            return <SubTitle key={index}> - {item}</SubTitle>
+            return <SubTitle key={index}> - {item.charAt(0).toUpperCase() + item.slice(1)}</SubTitle>
           })}
         <View style={{ marginVertical: 10 }}></View>
         <SubTitle>Nutrients</SubTitle>
@@ -66,7 +66,7 @@ export default function BottomSheetSection() {
         >
           Reset Nutrition
         </Button>
-      </ScrollView>
+      </BottomSheetScrollView>
     </BottomSheet>
   )
 }

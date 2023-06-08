@@ -8,7 +8,7 @@ export default function BlogPage() {
   const Stack = createStackNavigator()
   return (
     <Stack.Navigator >
-      <Stack.Screen name="Blog List" component={BlogListScreen} />
+      <Stack.Screen name="Blog" component={BlogListScreen} />
       <Stack.Screen name="Blog Page" component={FullPageBlog} />
     </Stack.Navigator>
   )
